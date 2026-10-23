@@ -1,0 +1,71 @@
+---
+name: scalar-kotlin-sdk
+description: "Kotlin SDK for Scalar API. Use when writing Kotlin code that calls Scalar API with the com.scalar package: installing it, constructing and authenticating the client, and calling API operations."
+---
+
+# Scalar Kotlin SDK
+
+Generated Kotlin client for Scalar API, published as `com.scalar`. Use the generated client instead of hand-writing HTTP requests.
+
+## Install
+
+```sh
+./gradlew :scalar-kotlin:build
+```
+
+## Client setup and authentication
+
+```kotlin
+import com.scalar.client.ScalarClient
+import com.scalar.client.okhttp.ScalarOkHttpClient
+
+val client: ScalarClient =
+    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
+```
+
+Provide credentials using the options below. Environment variables are read automatically when the target runtime supports them:
+
+- `bearerAuth` (env: `BEARER_AUTH`) — Credential for the BearerAuth client option.
+- `oAuth2` (env: `SCALAR_OAUTH_TOKEN`) — Authorization code with PKCE (S256), for apps acting on behalf of a Scalar user. Each scope implies the weaker ones.
+
+## Calling operations
+
+```kotlin
+import com.scalar.client.ScalarClient
+import com.scalar.client.okhttp.ScalarOkHttpClient
+import com.scalar.models.registry.RegistryListAllApiDocumentsParams
+
+val client: ScalarClient =
+    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
+
+val registry = client.registry().listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
+
+println(registry)
+```
+
+Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
+
+## Error handling
+
+Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
+
+```kotlin
+import com.scalar.errors.ScalarServiceException
+
+try {
+    val registry = client.registry().listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
+} catch (err: ScalarServiceException) {
+    println("${err.statusCode()} ${err.body()}")
+    throw err
+}
+```
+
+## Requirements
+
+- Java 8 or later
+- Gradle multi-module project rooted at `scalar-kotlin-root`, built with JDK 21
+
+## Reference files
+
+- [README.md](./README.md) — full feature tour: client options, request options, retries and timeouts, logging.
+- [api.md](./api.md) — complete catalogue of every operation with request and response types.
