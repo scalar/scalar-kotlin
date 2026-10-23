@@ -3,95 +3,95 @@
 // Smoke test: calls every generated operation once to confirm the SDK can reach each endpoint.
 // Run it from this repo with `./gradlew test`. The generator also runs this file
 // against a mock server and reads the JSON report produced via SCALAR_SMOKE_REPORT.
-import com.scalar.client.ScalarClient
-import com.scalar.client.okhttp.ScalarOkHttpClient
-import com.scalar.core.JsonValue
-import com.scalar.models.accessGroups.AccessGroupRetrieveParams
-import com.scalar.models.accessGroups.AccessGroupUpdateParams
-import com.scalar.models.accessGroups.domains.DomainCreateParams
-import com.scalar.models.accessGroups.domains.DomainDeleteParams
-import com.scalar.models.authentication.AuthenticationExchangePersonalTokenParams
-import com.scalar.models.authentication.AuthenticationListCurrentUserParams
-import com.scalar.models.loginPortals.LoginPortalCreateParams
-import com.scalar.models.loginPortals.LoginPortalDeleteParams
-import com.scalar.models.loginPortals.LoginPortalEmail
-import com.scalar.models.loginPortals.LoginPortalListParams
-import com.scalar.models.loginPortals.LoginPortalPage
-import com.scalar.models.loginPortals.LoginPortalRetrieveParams
-import com.scalar.models.loginPortals.LoginPortalUpdateParams
-import com.scalar.models.mcp.servers.ServerCreateParams
-import com.scalar.models.mcp.servers.ServerDeleteParams
-import com.scalar.models.mcp.servers.ServerListParams
-import com.scalar.models.mcp.servers.ServerRetrieveParams
-import com.scalar.models.mcp.servers.ServerUpdateParams
-import com.scalar.models.mcp.servers.installations.InstallationCreateAccessGroupParams
-import com.scalar.models.mcp.servers.installations.InstallationDeleteAccessGroupParams
-import com.scalar.models.mcp.servers.installations.InstallationDeleteParams
-import com.scalar.models.mcp.servers.installations.InstallationListParams
-import com.scalar.models.mcp.servers.installations.InstallationRetrieveParams
-import com.scalar.models.mcp.servers.installations.InstallationUpdateParams
-import com.scalar.models.namespaces.NamespaceListParams
-import com.scalar.models.registry.AccessGroup
-import com.scalar.models.registry.RegistryCreateApiDocumentAccessGroupParams
-import com.scalar.models.registry.RegistryCreateApiDocumentParams
-import com.scalar.models.registry.RegistryCreateApiDocumentVersionParams
-import com.scalar.models.registry.RegistryDeleteApiDocumentAccessGroupParams
-import com.scalar.models.registry.RegistryDeleteApiDocumentParams
-import com.scalar.models.registry.RegistryDeleteApiDocumentVersionParams
-import com.scalar.models.registry.RegistryListAllApiDocumentsParams
-import com.scalar.models.registry.RegistryListApiDocumentVersionMetadataParams
-import com.scalar.models.registry.RegistryListApiDocumentsParams
-import com.scalar.models.registry.RegistryRetrieveApiDocumentVersionParams
-import com.scalar.models.registry.RegistryUpdateApiDocumentParams
-import com.scalar.models.registry.RegistryUpdateApiDocumentVersionParams
-import com.scalar.models.rules.RuleCreateRulesetAccessGroupParams
-import com.scalar.models.rules.RuleCreateRulesetParams
-import com.scalar.models.rules.RuleDeleteRulesetAccessGroupParams
-import com.scalar.models.rules.RuleDeleteRulesetParams
-import com.scalar.models.rules.RuleListRulesetsParams
-import com.scalar.models.rules.RuleRetrieveRulesetDocumentParams
-import com.scalar.models.rules.RuleUpdateRulesetParams
-import com.scalar.models.scalarDocs.ScalarDocCreateGuideParams
-import com.scalar.models.scalarDocs.ScalarDocCreateProjectParams
-import com.scalar.models.scalarDocs.ScalarDocDeleteProjectParams
-import com.scalar.models.scalarDocs.ScalarDocListGuidesParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectConfigParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectDomainParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectDomainStatusParams
-import com.scalar.models.scalarDocs.ScalarDocListProjectsParams
-import com.scalar.models.scalarDocs.ScalarDocPublishGuideParams
-import com.scalar.models.scalarDocs.ScalarDocPublishProjectParams
-import com.scalar.models.scalarDocs.ScalarDocRetrieveProjectParams
-import com.scalar.models.scalarDocs.ScalarDocUpdateProjectConfigParams
-import com.scalar.models.scalarDocs.ScalarDocUpdateProjectParams
-import com.scalar.models.schemas.SchemaCreateParams
-import com.scalar.models.schemas.SchemaDeleteParams
-import com.scalar.models.schemas.SchemaListParams
-import com.scalar.models.schemas.SchemaUpdateParams
-import com.scalar.models.schemas.version.VersionRetrieveParams
-import com.scalar.models.sdks.SdkBuildParams
-import com.scalar.models.sdks.SdkCreateParams
-import com.scalar.models.sdks.SdkDeleteParams
-import com.scalar.models.sdks.SdkListParams
-import com.scalar.models.sdks.SdkRetrieveParams
-import com.scalar.models.sdks.SdkUpdateParams
-import com.scalar.models.sdks.repositories.RepositoryLinkParams
-import com.scalar.models.sdks.repositories.RepositoryUnlinkParams
-import com.scalar.models.sdks.repositories.RepositoryUpdatePublishingParams
-import com.scalar.models.teams.TeamListParams
-import com.scalar.models.teams.invites.InviteCancelParams
-import com.scalar.models.teams.invites.InviteMemberParams
-import com.scalar.models.teams.invites.InviteResendParams
-import com.scalar.models.teams.invites.Role
-import com.scalar.models.teams.members.MemberDeleteParams
-import com.scalar.models.teams.members.MemberListParams
-import com.scalar.models.teams.members.MemberUpdateParams
-import com.scalar.models.themes.ThemeCreateParams
-import com.scalar.models.themes.ThemeDeleteParams
-import com.scalar.models.themes.ThemeListParams
-import com.scalar.models.themes.ThemeReplaceDocumentParams
-import com.scalar.models.themes.ThemeRetrieveParams
-import com.scalar.models.themes.ThemeUpdateParams
+import com.scalar.api.client.ScalarClient
+import com.scalar.api.client.okhttp.ScalarOkHttpClient
+import com.scalar.api.core.JsonValue
+import com.scalar.api.models.accessGroups.AccessGroupRetrieveParams
+import com.scalar.api.models.accessGroups.AccessGroupUpdateParams
+import com.scalar.api.models.accessGroups.domains.DomainCreateParams
+import com.scalar.api.models.accessGroups.domains.DomainDeleteParams
+import com.scalar.api.models.authentication.AuthenticationExchangePersonalTokenParams
+import com.scalar.api.models.authentication.AuthenticationListCurrentUserParams
+import com.scalar.api.models.loginPortals.LoginPortalCreateParams
+import com.scalar.api.models.loginPortals.LoginPortalDeleteParams
+import com.scalar.api.models.loginPortals.LoginPortalEmail
+import com.scalar.api.models.loginPortals.LoginPortalListParams
+import com.scalar.api.models.loginPortals.LoginPortalPage
+import com.scalar.api.models.loginPortals.LoginPortalRetrieveParams
+import com.scalar.api.models.loginPortals.LoginPortalUpdateParams
+import com.scalar.api.models.mcp.servers.ServerCreateParams
+import com.scalar.api.models.mcp.servers.ServerDeleteParams
+import com.scalar.api.models.mcp.servers.ServerListParams
+import com.scalar.api.models.mcp.servers.ServerRetrieveParams
+import com.scalar.api.models.mcp.servers.ServerUpdateParams
+import com.scalar.api.models.mcp.servers.installations.InstallationCreateAccessGroupParams
+import com.scalar.api.models.mcp.servers.installations.InstallationDeleteAccessGroupParams
+import com.scalar.api.models.mcp.servers.installations.InstallationDeleteParams
+import com.scalar.api.models.mcp.servers.installations.InstallationListParams
+import com.scalar.api.models.mcp.servers.installations.InstallationRetrieveParams
+import com.scalar.api.models.mcp.servers.installations.InstallationUpdateParams
+import com.scalar.api.models.namespaces.NamespaceListParams
+import com.scalar.api.models.registry.AccessGroup
+import com.scalar.api.models.registry.RegistryCreateApiDocumentAccessGroupParams
+import com.scalar.api.models.registry.RegistryCreateApiDocumentParams
+import com.scalar.api.models.registry.RegistryCreateApiDocumentVersionParams
+import com.scalar.api.models.registry.RegistryDeleteApiDocumentAccessGroupParams
+import com.scalar.api.models.registry.RegistryDeleteApiDocumentParams
+import com.scalar.api.models.registry.RegistryDeleteApiDocumentVersionParams
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams
+import com.scalar.api.models.registry.RegistryListApiDocumentVersionMetadataParams
+import com.scalar.api.models.registry.RegistryListApiDocumentsParams
+import com.scalar.api.models.registry.RegistryRetrieveApiDocumentVersionParams
+import com.scalar.api.models.registry.RegistryUpdateApiDocumentParams
+import com.scalar.api.models.registry.RegistryUpdateApiDocumentVersionParams
+import com.scalar.api.models.rules.RuleCreateRulesetAccessGroupParams
+import com.scalar.api.models.rules.RuleCreateRulesetParams
+import com.scalar.api.models.rules.RuleDeleteRulesetAccessGroupParams
+import com.scalar.api.models.rules.RuleDeleteRulesetParams
+import com.scalar.api.models.rules.RuleListRulesetsParams
+import com.scalar.api.models.rules.RuleRetrieveRulesetDocumentParams
+import com.scalar.api.models.rules.RuleUpdateRulesetParams
+import com.scalar.api.models.scalarDocs.ScalarDocCreateGuideParams
+import com.scalar.api.models.scalarDocs.ScalarDocCreateProjectParams
+import com.scalar.api.models.scalarDocs.ScalarDocDeleteProjectParams
+import com.scalar.api.models.scalarDocs.ScalarDocListGuidesParams
+import com.scalar.api.models.scalarDocs.ScalarDocListProjectConfigParams
+import com.scalar.api.models.scalarDocs.ScalarDocListProjectDomainParams
+import com.scalar.api.models.scalarDocs.ScalarDocListProjectDomainStatusParams
+import com.scalar.api.models.scalarDocs.ScalarDocListProjectsParams
+import com.scalar.api.models.scalarDocs.ScalarDocPublishGuideParams
+import com.scalar.api.models.scalarDocs.ScalarDocPublishProjectParams
+import com.scalar.api.models.scalarDocs.ScalarDocRetrieveProjectParams
+import com.scalar.api.models.scalarDocs.ScalarDocUpdateProjectConfigParams
+import com.scalar.api.models.scalarDocs.ScalarDocUpdateProjectParams
+import com.scalar.api.models.schemas.SchemaCreateParams
+import com.scalar.api.models.schemas.SchemaDeleteParams
+import com.scalar.api.models.schemas.SchemaListParams
+import com.scalar.api.models.schemas.SchemaUpdateParams
+import com.scalar.api.models.schemas.version.VersionRetrieveParams
+import com.scalar.api.models.sdks.SdkBuildParams
+import com.scalar.api.models.sdks.SdkCreateParams
+import com.scalar.api.models.sdks.SdkDeleteParams
+import com.scalar.api.models.sdks.SdkListParams
+import com.scalar.api.models.sdks.SdkRetrieveParams
+import com.scalar.api.models.sdks.SdkUpdateParams
+import com.scalar.api.models.sdks.repositories.RepositoryLinkParams
+import com.scalar.api.models.sdks.repositories.RepositoryUnlinkParams
+import com.scalar.api.models.sdks.repositories.RepositoryUpdatePublishingParams
+import com.scalar.api.models.teams.TeamListParams
+import com.scalar.api.models.teams.invites.InviteCancelParams
+import com.scalar.api.models.teams.invites.InviteMemberParams
+import com.scalar.api.models.teams.invites.InviteResendParams
+import com.scalar.api.models.teams.invites.Role
+import com.scalar.api.models.teams.members.MemberDeleteParams
+import com.scalar.api.models.teams.members.MemberListParams
+import com.scalar.api.models.teams.members.MemberUpdateParams
+import com.scalar.api.models.themes.ThemeCreateParams
+import com.scalar.api.models.themes.ThemeDeleteParams
+import com.scalar.api.models.themes.ThemeListParams
+import com.scalar.api.models.themes.ThemeReplaceDocumentParams
+import com.scalar.api.models.themes.ThemeRetrieveParams
+import com.scalar.api.models.themes.ThemeUpdateParams
 import java.nio.file.Files
 import java.nio.file.Path
 import java.time.Duration
@@ -342,7 +342,7 @@ private fun _smokeCase21() {
 
 private fun _smokeCase22() {
     val params =
-        com.scalar.models.schemas.version.VersionDeleteParams.builder()
+        com.scalar.api.models.schemas.version.VersionDeleteParams.builder()
             .namespace("acme")
             .slug("customer")
             .semver("1.2.0")
@@ -352,7 +352,7 @@ private fun _smokeCase22() {
 
 private fun _smokeCase23() {
     val params =
-        com.scalar.models.schemas.version.VersionCreateParams.builder()
+        com.scalar.api.models.schemas.version.VersionCreateParams.builder()
             .namespace("acme")
             .slug("customer")
             .version("1.2.0")
@@ -365,7 +365,7 @@ private fun _smokeCase23() {
 
 private fun _smokeCase24() {
     val params =
-        com.scalar.models.schemas.version.VersionCreateParams.builder()
+        com.scalar.api.models.schemas.version.VersionCreateParams.builder()
             .namespace("acme")
             .slug("customer")
             .version("1.2.0")
@@ -379,7 +379,7 @@ private fun _smokeCase24() {
 
 private fun _smokeCase25() {
     val params =
-        com.scalar.models.schemas.accessGroup.AccessGroupCreateParams.builder()
+        com.scalar.api.models.schemas.accessGroup.AccessGroupCreateParams.builder()
             .namespace("acme")
             .slug("customer")
             .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
@@ -389,7 +389,7 @@ private fun _smokeCase25() {
 
 private fun _smokeCase26() {
     val params =
-        com.scalar.models.schemas.accessGroup.AccessGroupDeleteParams.builder()
+        com.scalar.api.models.schemas.accessGroup.AccessGroupDeleteParams.builder()
             .namespace("acme")
             .slug("customer")
             .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
@@ -469,12 +469,14 @@ private fun _smokeCase32() {
 
 private fun _smokeCase33() {
     val accessGroup =
-        client.accessGroups().create(com.scalar.models.accessGroups.AccessGroupCreateParams.none())
+        client
+            .accessGroups()
+            .create(com.scalar.api.models.accessGroups.AccessGroupCreateParams.none())
 }
 
 private fun _smokeCase34() {
     val params =
-        com.scalar.models.accessGroups.AccessGroupCreateParams.builder()
+        com.scalar.api.models.accessGroups.AccessGroupCreateParams.builder()
             .name("Engineering")
             .slug("acme-api")
             .allowedDomains(JsonValue.from("example.com"))
@@ -504,7 +506,9 @@ private fun _smokeCase37() {
 
 private fun _smokeCase38() {
     val params =
-        com.scalar.models.accessGroups.AccessGroupDeleteParams.builder().slug("acme-api").build()
+        com.scalar.api.models.accessGroups.AccessGroupDeleteParams.builder()
+            .slug("acme-api")
+            .build()
     val accessGroup = client.accessGroups().delete(params)
 }
 
@@ -948,7 +952,7 @@ private fun _smokeCase97() {
 
 private fun _smokeCase98() {
     val params =
-        com.scalar.models.sdks.versions.VersionCreateParams.builder()
+        com.scalar.api.models.sdks.versions.VersionCreateParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
             .version("1.2.0")
             .apiVersion("1.2.0")
@@ -958,7 +962,7 @@ private fun _smokeCase98() {
 
 private fun _smokeCase99() {
     val params =
-        com.scalar.models.sdks.versions.VersionDeleteParams.builder()
+        com.scalar.api.models.sdks.versions.VersionDeleteParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
             .version("1.2.0")
             .build()

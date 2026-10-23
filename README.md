@@ -34,6 +34,24 @@ The full API of this library can be found in [api.md](./api.md).
 
 ## Installation
 
+Add the dependency to your Gradle build:
+
+```kotlin
+implementation("com.scalar.api:scalar-kotlin:0.1.0") // x-release-please-version
+```
+
+Or declare it in your Maven `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>com.scalar.api</groupId>
+  <artifactId>scalar-kotlin</artifactId>
+  <version>0.1.0</version> <!-- x-release-please-version -->
+</dependency>
+```
+
+Or build the SDK from source, with JDK 21 installed:
+
 ```sh
 ./gradlew :scalar-kotlin:build
 ```
@@ -43,9 +61,9 @@ The full API of this library can be found in [api.md](./api.md).
 ## Usage
 
 ```kotlin
-import com.scalar.client.ScalarClient
-import com.scalar.client.okhttp.ScalarOkHttpClient
-import com.scalar.models.registry.RegistryListAllApiDocumentsParams
+import com.scalar.api.client.ScalarClient
+import com.scalar.api.client.okhttp.ScalarOkHttpClient
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams
 
 val client: ScalarClient =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
@@ -66,9 +84,9 @@ See the [API reference](./api.md) for every available operation.
 Use `ScalarOkHttpClientAsync.builder()` or call `client.async()` when you want coroutine `suspend` services. Call `sync()` on the async client to switch back; both clients share one connection and thread pool.
 
 ```kotlin
-import com.scalar.client.ScalarClientAsync
-import com.scalar.client.okhttp.ScalarOkHttpClientAsync
-import com.scalar.models.registry.RegistryListAllApiDocumentsParams
+import com.scalar.api.client.ScalarClientAsync
+import com.scalar.api.client.okhttp.ScalarOkHttpClientAsync
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams
 import kotlinx.coroutines.runBlocking
 
 val client: ScalarClientAsync =
@@ -216,7 +234,7 @@ Declared schemes:
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```kotlin
-import com.scalar.errors.ScalarServiceException
+import com.scalar.api.errors.ScalarServiceException
 
 try {
     val registry = client.registry().listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
@@ -235,8 +253,8 @@ Documented error statuses: `400`, `401`, `403`, `404`, `422`, `500`.
 Configure the generated client by setting any of these options when you create it.
 
 ```kotlin
-import com.scalar.client.ScalarClient
-import com.scalar.client.okhttp.ScalarOkHttpClient
+import com.scalar.api.client.ScalarClient
+import com.scalar.api.client.okhttp.ScalarOkHttpClient
 import java.time.Duration
 
 val client: ScalarClient =
@@ -297,7 +315,6 @@ Generated clients support request timeouts and retry temporary failures such as 
 ## Requirements
 
 - Java 8 or later
-- Gradle multi-module project rooted at `scalar-kotlin-root`, built with JDK 21
 
 <br />
 

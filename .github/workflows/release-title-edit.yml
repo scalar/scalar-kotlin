@@ -1,0 +1,93 @@
+name: Release PR Version
+
+on:
+  # `edited` is not one of the default pull_request types, but it is the point of this
+  # workflow: retitling the release PR is how a maintainer picks an exact version, and the
+  # check has to re-run on the new title. The other types keep the consistency check attached
+  # to the PR as it evolves.
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+# Read-only: the check reads the committed version, and polls the pull request while it waits
+# for a re-render.
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  version-consistency:
+    # Also the check name the release PR's footer tells maintainers to wait for.
+    name: Release PR version
+    # A release-shaped title against the release branch is the whole test here, with no clause
+    # on who opened the pull request or what branch it is rendered onto. This job only reads,
+    # and a pull request claiming to be a release is worth checking against the committed
+    # version whoever opened it. Every other pull request skips this job, which GitHub reports
+    # as neutral.
+    #
+    # Loose on purpose: the prefix, not the full semver pattern the script matches. A version
+    # typo'd into the title still reaches the script and fails there, rather than falling out
+    # of the guard and leaving no check at all — a missing check is not a failing one, and this
+    # is the check the release PR's footer tells maintainers to wait for before merging.
+    if: >-
+      ${{ github.event.pull_request.base.ref == 'main'
+      && startsWith(github.event.pull_request.title, 'release: ') }}
+    runs-on: ubuntu-latest
+    # Bounds the wait below with room to spare; a re-render normally lands within a minute.
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The version committed on the PR head is what merging would actually release.
+          ref: ${{ github.event.pull_request.head.sha }}
+      # A retitle is applied by the Scalar platform, which pushes a Release-As commit to the
+      # integration branch and re-renders the release PR at that version. Until it lands, the
+      # title and the committed version disagree, and a merge in that window would tag a release
+      # whose own files self-report the old version.
+      #
+      # So this waits rather than failing: the check stays pending, which blocks a merge just as
+      # a failure would where the check is required, but does not flash red on every retitle. It
+      # passes once the title and the committed version agree, and hands over once the head
+      # moves, since the re-render's push starts a run of its own on the new head. It never
+      # passes while the title still disagrees, even a newer title: the run started for that
+      # edit judges it, and a pass here would sit beside it on the same head. Only a re-render
+      # that never arrives, or a title that is not a version at all, fails it.
+      - name: Compare the title version with the committed version
+        env:
+          # The title is human input, so it is bound through the environment (never
+          # interpolated into the script) and matched against a strict semver pattern
+          # before it is read.
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pattern='^release: ((0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?)$'
+          if [[ ! "$PR_TITLE" =~ $pattern ]]; then
+            echo "::error::Release PR title must be \"release: X.Y.Z\" with a full semver version, got: $PR_TITLE"
+            exit 1
+          fi
+          title_version="${BASH_REMATCH[1]}"
+          manifest_version="$(jq -r '.["."]' .release-please-manifest.json)"
+          if [[ "$title_version" == "$manifest_version" ]]; then
+            echo "Release PR title and committed version agree on $title_version."
+            exit 0
+          fi
+          echo "Release PR title says $title_version but the pull request is versioned $manifest_version. Waiting for it to be re-rendered at $title_version."
+          # Up to ten minutes: 60 polls, 10 seconds apart.
+          for _ in $(seq 60); do
+            sleep 10
+            # A failed read is retried on the next poll rather than failing the check.
+            current="$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '[.head.sha, .title] | @tsv')" || continue
+            IFS=$'\t' read -r current_sha current_title <<< "$current"
+            if [[ "$current_sha" != "$HEAD_SHA" ]]; then
+              echo "The release PR has a new head; the run for that push checks it."
+              exit 0
+            fi
+            if [[ "$current_title" =~ $pattern && "${BASH_REMATCH[1]}" == "$manifest_version" ]]; then
+              echo "Release PR title and committed version agree on $manifest_version."
+              exit 0
+            fi
+          done
+          echo "::error::Release PR title says $title_version but the pull request is still versioned $manifest_version after 10 minutes. Rebuild the SDK from the Scalar dashboard to re-render it."
+          exit 1
