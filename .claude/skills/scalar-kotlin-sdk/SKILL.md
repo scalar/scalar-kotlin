@@ -1,13 +1,31 @@
 ---
 name: scalar-kotlin-sdk
-description: "Kotlin SDK for Scalar API. Use when writing Kotlin code that calls Scalar API with the com.scalar package: installing it, constructing and authenticating the client, and calling API operations."
+description: "Kotlin SDK for Scalar API. Use when writing Kotlin code that calls Scalar API with the com.scalar.api package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
 # Scalar Kotlin SDK
 
-Generated Kotlin client for Scalar API, published as `com.scalar`. Use the generated client instead of hand-writing HTTP requests.
+Generated Kotlin client for Scalar API, published as `com.scalar.api`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
+
+Add the dependency to your Gradle build:
+
+```kotlin
+implementation("com.scalar.api:scalar-kotlin:0.2.0") // x-release-please-version
+```
+
+Or declare it in your Maven `pom.xml`:
+
+```xml
+<dependency>
+  <groupId>com.scalar.api</groupId>
+  <artifactId>scalar-kotlin</artifactId>
+  <version>0.2.0</version> <!-- x-release-please-version -->
+</dependency>
+```
+
+Or build the SDK from source, with JDK 21 installed:
 
 ```sh
 ./gradlew :scalar-kotlin:build
@@ -16,8 +34,8 @@ Generated Kotlin client for Scalar API, published as `com.scalar`. Use the gener
 ## Client setup and authentication
 
 ```kotlin
-import com.scalar.client.ScalarClient
-import com.scalar.client.okhttp.ScalarOkHttpClient
+import com.scalar.api.client.ScalarClient
+import com.scalar.api.client.okhttp.ScalarOkHttpClient
 
 val client: ScalarClient =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
@@ -31,9 +49,9 @@ Provide credentials using the options below. Environment variables are read auto
 ## Calling operations
 
 ```kotlin
-import com.scalar.client.ScalarClient
-import com.scalar.client.okhttp.ScalarOkHttpClient
-import com.scalar.models.registry.RegistryListAllApiDocumentsParams
+import com.scalar.api.client.ScalarClient
+import com.scalar.api.client.okhttp.ScalarOkHttpClient
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams
 
 val client: ScalarClient =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
@@ -50,7 +68,7 @@ Method names, parameter shapes, and response types are generated from the API de
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
 ```kotlin
-import com.scalar.errors.ScalarServiceException
+import com.scalar.api.errors.ScalarServiceException
 
 try {
     val registry = client.registry().listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
@@ -63,7 +81,6 @@ try {
 ## Requirements
 
 - Java 8 or later
-- Gradle multi-module project rooted at `scalar-kotlin-root`, built with JDK 21
 
 ## Reference files
 

@@ -1,7 +1,7 @@
 {
   "name": "Scalar",
   "slug": "scalar",
-  "generatorVersion": "0.36.8",
+  "generatorVersion": "0.36.9",
   "servers": [
     "https://access.scalar.com"
   ],
@@ -2437,6 +2437,22 @@
           {
             "name": "analyticsEnabled",
             "publicName": "analyticsEnabled",
+            "required": true,
+            "deprecated": false,
+            "extensions": {
+              "source": [
+                "examples"
+              ],
+              "examples": true
+            },
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "chatInsightsEnabled",
+            "publicName": "chatInsightsEnabled",
             "required": true,
             "deprecated": false,
             "extensions": {
