@@ -25,6 +25,12 @@ class QueryParams private constructor(private val map: Map<String, List<String>>
     companion object {
 
         fun builder() = Builder()
+
+        /**
+         * Query parameters the SDK's auth schemes place a credential in, whose values [toString]
+         * masks for the same reason `Headers.toString` masks credential headers.
+         */
+        private val REDACTED_PARAMS: Set<String> = setOf()
     }
 
     class Builder internal constructor() {
@@ -121,5 +127,6 @@ class QueryParams private constructor(private val map: Map<String, List<String>>
         return other is QueryParams && map == other.map
     }
 
-    override fun toString(): String = "QueryParams{map=$map}"
+    override fun toString(): String =
+        "QueryParams{map=${map.mapValues { (key, values) -> if (key in REDACTED_PARAMS) values.map { "██" } else values }}}"
 }

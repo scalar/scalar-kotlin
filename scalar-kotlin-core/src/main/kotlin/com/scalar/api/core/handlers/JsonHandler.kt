@@ -6,13 +6,15 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.scalar.api.core.http.HttpResponse
 import com.scalar.api.core.http.HttpResponse.Handler
+import com.scalar.api.core.http.boundedBody
 import com.scalar.api.errors.ScalarInvalidDataException
 
 internal inline fun <reified T> jsonHandler(jsonMapper: JsonMapper): Handler<T> =
     object : Handler<T> {
         override fun handle(response: HttpResponse): T {
             try {
-                return jsonMapper.readValue(response.body(), jacksonTypeRef())
+                // Bounded: a body is parsed whole, so its size is the memory it costs.
+                return jsonMapper.readValue(response.boundedBody(), jacksonTypeRef())
             } catch (e: Exception) {
                 throw ScalarInvalidDataException("Error reading response", e)
             }
