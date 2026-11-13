@@ -46,7 +46,11 @@ interface SdkServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): Uid
 
-    /** Get a single SDK by its uid. */
+    /**
+     * Get a single SDK by its uid with the languages its config declares, its version labels
+     * highest first, the current version label per language (`current`), and the `currentVersion`
+     * and `latestVersion` tags.
+     */
     suspend fun retrieve(
         uid: String,
         params: SdkRetrieveParams = SdkRetrieveParams.none(),
@@ -80,7 +84,11 @@ interface SdkServiceAsync {
     suspend fun update(uid: String, requestOptions: RequestOptions): Any? =
         update(uid, SdkUpdateParams.none(), requestOptions)
 
-    /** List every SDK on the team. */
+    /**
+     * List every SDK on the team with the languages its config declares, each with its version
+     * labels highest first, the current version label per language (`current`), and the
+     * `currentVersion` and `latestVersion` tags.
+     */
     suspend fun list(
         params: SdkListParams = SdkListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -108,8 +116,12 @@ interface SdkServiceAsync {
         delete(uid, SdkDeleteParams.none(), requestOptions)
 
     /**
-     * Start a build. Omit `version` to build the current work — the open draft, else the latest
-     * version — and the resolved version comes back in the response.
+     * Start a build with the SDK's saved config. Every input is optional: `version` is the version
+     * of the linked API description to build (default: its latest version), `customCodeRef` the
+     * branch, tag or commit each language merges as custom code (default: each language's
+     * `scalar-next` branch), and `languages` the languages to build (default: every language the
+     * config declares). The response names the version built. A 503 means the custom code could not
+     * be read from GitHub and nothing was built; try again.
      */
     suspend fun build(
         uid: String,
