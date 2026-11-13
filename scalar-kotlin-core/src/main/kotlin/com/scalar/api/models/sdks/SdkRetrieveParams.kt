@@ -7,7 +7,11 @@ import com.scalar.api.core.http.Headers
 import com.scalar.api.core.http.QueryParams
 import java.util.Objects
 
-/** Get a single SDK by its uid. */
+/**
+ * Get a single SDK by its uid with the languages its config declares, its version labels highest
+ * first, the current version label per language (`current`), and the `currentVersion` and
+ * `latestVersion` tags.
+ */
 class SdkRetrieveParams
 private constructor(
     private val uid: String?,

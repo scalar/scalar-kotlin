@@ -925,7 +925,7 @@ private fun _smokeCase94() {
             .isPrivate(false)
             .config("{\"targets\":{\"typescript\":{\"packageName\":\"@acme/sdk\"}}}")
             .apiUid("")
-            .apiVersion("")
+            .apiVersion(JsonValue.from("value"))
             .build()
     val sdk = client.sdks().update(params)
 }
@@ -945,6 +945,7 @@ private fun _smokeCase97() {
         SdkBuildParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
             .version("1.2.0")
+            .customCodeRef("scalar-next")
             .languages(listOf(SdkBuildParams.Language.of("typescript")))
             .build()
     val sdk = client.sdks().build(params)
@@ -955,12 +956,21 @@ private fun _smokeCase98() {
         com.scalar.api.models.sdks.versions.VersionCreateParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
             .version("1.2.0")
-            .apiVersion("1.2.0")
             .build()
     val version = client.sdks().versions().create(params)
 }
 
 private fun _smokeCase99() {
+    val params =
+        com.scalar.api.models.sdks.versions.VersionCreateParams.builder()
+            .uid("UakgbKJ5m9gl0JDMbcJqL")
+            .version("1.2.0")
+            .apiVersion(JsonValue.from("value"))
+            .build()
+    val version = client.sdks().versions().create(params)
+}
+
+private fun _smokeCase100() {
     val params =
         com.scalar.api.models.sdks.versions.VersionDeleteParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
@@ -969,7 +979,7 @@ private fun _smokeCase99() {
     val version = client.sdks().versions().delete(params)
 }
 
-private fun _smokeCase100() {
+private fun _smokeCase101() {
     val params =
         RepositoryLinkParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
@@ -980,7 +990,7 @@ private fun _smokeCase100() {
     val repository = client.sdks().repositories().link(params)
 }
 
-private fun _smokeCase101() {
+private fun _smokeCase102() {
     val params =
         RepositoryLinkParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
@@ -992,7 +1002,7 @@ private fun _smokeCase101() {
     val repository = client.sdks().repositories().link(params)
 }
 
-private fun _smokeCase102() {
+private fun _smokeCase103() {
     val params =
         RepositoryUnlinkParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
@@ -1001,7 +1011,7 @@ private fun _smokeCase102() {
     val repository = client.sdks().repositories().unlink(params)
 }
 
-private fun _smokeCase103() {
+private fun _smokeCase104() {
     val params =
         RepositoryUpdatePublishingParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
@@ -1011,7 +1021,7 @@ private fun _smokeCase103() {
     val repository = client.sdks().repositories().updatePublishing(params)
 }
 
-private fun _smokeCase104() {
+private fun _smokeCase105() {
     val params =
         RepositoryUpdatePublishingParams.builder()
             .uid("UakgbKJ5m9gl0JDMbcJqL")
@@ -1027,16 +1037,16 @@ private fun _smokeCase104() {
     val repository = client.sdks().repositories().updatePublishing(params)
 }
 
-private fun _smokeCase105() {
+private fun _smokeCase106() {
     val server = client.mcp().servers().list(ServerListParams.none())
 }
 
-private fun _smokeCase106() {
+private fun _smokeCase107() {
     val params = ServerCreateParams.builder().name("Acme MCP").build()
     val server = client.mcp().servers().create(params)
 }
 
-private fun _smokeCase107() {
+private fun _smokeCase108() {
     val params =
         ServerCreateParams.builder()
             .name("Acme MCP")
@@ -1047,17 +1057,17 @@ private fun _smokeCase107() {
     val server = client.mcp().servers().create(params)
 }
 
-private fun _smokeCase108() {
+private fun _smokeCase109() {
     val params = ServerRetrieveParams.builder().id("42").build()
     val server = client.mcp().servers().retrieve(params)
 }
 
-private fun _smokeCase109() {
+private fun _smokeCase110() {
     val params = ServerUpdateParams.builder().id("42").build()
     val server = client.mcp().servers().update(params)
 }
 
-private fun _smokeCase110() {
+private fun _smokeCase111() {
     val params =
         ServerUpdateParams.builder()
             .id("42")
@@ -1069,27 +1079,27 @@ private fun _smokeCase110() {
     val server = client.mcp().servers().update(params)
 }
 
-private fun _smokeCase111() {
+private fun _smokeCase112() {
     val params = ServerDeleteParams.builder().id("42").build()
     val server = client.mcp().servers().delete(params)
 }
 
-private fun _smokeCase112() {
+private fun _smokeCase113() {
     val params = InstallationListParams.builder().id("42").build()
     val installation = client.mcp().servers().installations().list(params)
 }
 
-private fun _smokeCase113() {
+private fun _smokeCase114() {
     val params = InstallationRetrieveParams.builder().id("42").installationId("84").build()
     val installation = client.mcp().servers().installations().retrieve(params)
 }
 
-private fun _smokeCase114() {
+private fun _smokeCase115() {
     val params = InstallationUpdateParams.builder().id("42").installationId("84").build()
     val installation = client.mcp().servers().installations().update(params)
 }
 
-private fun _smokeCase115() {
+private fun _smokeCase116() {
     val params =
         InstallationUpdateParams.builder()
             .id("42")
@@ -1101,12 +1111,12 @@ private fun _smokeCase115() {
     val installation = client.mcp().servers().installations().update(params)
 }
 
-private fun _smokeCase116() {
+private fun _smokeCase117() {
     val params = InstallationDeleteParams.builder().id("42").installationId("84").build()
     val installation = client.mcp().servers().installations().delete(params)
 }
 
-private fun _smokeCase117() {
+private fun _smokeCase118() {
     val params =
         InstallationCreateAccessGroupParams.builder()
             .id("42")
@@ -1116,7 +1126,7 @@ private fun _smokeCase117() {
     val installation = client.mcp().servers().installations().createAccessGroup(params)
 }
 
-private fun _smokeCase118() {
+private fun _smokeCase119() {
     val params =
         InstallationDeleteAccessGroupParams.builder()
             .id("42")
@@ -1126,7 +1136,7 @@ private fun _smokeCase118() {
     val installation = client.mcp().servers().installations().deleteAccessGroup(params)
 }
 
-private fun _smokeCase119() {
+private fun _smokeCase120() {
     runBlocking {
         val registry =
             client.async().registry().listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
@@ -1775,144 +1785,152 @@ private val cases =
             operation = "create",
             method = "POST",
             path = "/v1/sdks/{uid}/versions",
+            label = "required params",
             run = ::_smokeCase98,
+        ),
+        SmokeCase(
+            operation = "create",
+            method = "POST",
+            path = "/v1/sdks/{uid}/versions",
+            label = "all params",
+            run = ::_smokeCase99,
         ),
         SmokeCase(
             operation = "delete",
             method = "DELETE",
             path = "/v1/sdks/{uid}/versions/{version}",
-            run = ::_smokeCase99,
-        ),
-        SmokeCase(
-            operation = "link",
-            method = "POST",
-            path = "/v1/sdks/{uid}/repositories",
-            label = "required params",
             run = ::_smokeCase100,
         ),
         SmokeCase(
             operation = "link",
             method = "POST",
             path = "/v1/sdks/{uid}/repositories",
-            label = "all params",
+            label = "required params",
             run = ::_smokeCase101,
+        ),
+        SmokeCase(
+            operation = "link",
+            method = "POST",
+            path = "/v1/sdks/{uid}/repositories",
+            label = "all params",
+            run = ::_smokeCase102,
         ),
         SmokeCase(
             operation = "unlink",
             method = "DELETE",
             path = "/v1/sdks/{uid}/repositories/{language}",
-            run = ::_smokeCase102,
-        ),
-        SmokeCase(
-            operation = "updatePublishing",
-            method = "POST",
-            path = "/v1/sdks/{uid}/repositories/{language}/publishing",
-            label = "required params",
             run = ::_smokeCase103,
         ),
         SmokeCase(
             operation = "updatePublishing",
             method = "POST",
             path = "/v1/sdks/{uid}/repositories/{language}/publishing",
-            label = "all params",
+            label = "required params",
             run = ::_smokeCase104,
+        ),
+        SmokeCase(
+            operation = "updatePublishing",
+            method = "POST",
+            path = "/v1/sdks/{uid}/repositories/{language}/publishing",
+            label = "all params",
+            run = ::_smokeCase105,
         ),
         SmokeCase(
             operation = "list",
             method = "GET",
             path = "/v1/mcp/servers",
-            run = ::_smokeCase105,
-        ),
-        SmokeCase(
-            operation = "create",
-            method = "POST",
-            path = "/v1/mcp/servers",
-            label = "required params",
             run = ::_smokeCase106,
         ),
         SmokeCase(
             operation = "create",
             method = "POST",
             path = "/v1/mcp/servers",
-            label = "all params",
+            label = "required params",
             run = ::_smokeCase107,
+        ),
+        SmokeCase(
+            operation = "create",
+            method = "POST",
+            path = "/v1/mcp/servers",
+            label = "all params",
+            run = ::_smokeCase108,
         ),
         SmokeCase(
             operation = "retrieve",
             method = "GET",
             path = "/v1/mcp/servers/{id}",
-            run = ::_smokeCase108,
-        ),
-        SmokeCase(
-            operation = "update",
-            method = "PATCH",
-            path = "/v1/mcp/servers/{id}",
-            label = "required params",
             run = ::_smokeCase109,
         ),
         SmokeCase(
             operation = "update",
             method = "PATCH",
             path = "/v1/mcp/servers/{id}",
-            label = "all params",
+            label = "required params",
             run = ::_smokeCase110,
+        ),
+        SmokeCase(
+            operation = "update",
+            method = "PATCH",
+            path = "/v1/mcp/servers/{id}",
+            label = "all params",
+            run = ::_smokeCase111,
         ),
         SmokeCase(
             operation = "delete",
             method = "DELETE",
             path = "/v1/mcp/servers/{id}",
-            run = ::_smokeCase111,
+            run = ::_smokeCase112,
         ),
         SmokeCase(
             operation = "list",
             method = "GET",
             path = "/v1/mcp/servers/{id}/installations",
-            run = ::_smokeCase112,
+            run = ::_smokeCase113,
         ),
         SmokeCase(
             operation = "retrieve",
             method = "GET",
             path = "/v1/mcp/servers/{id}/installations/{installationId}",
-            run = ::_smokeCase113,
-        ),
-        SmokeCase(
-            operation = "update",
-            method = "PATCH",
-            path = "/v1/mcp/servers/{id}/installations/{installationId}",
-            label = "required params",
             run = ::_smokeCase114,
         ),
         SmokeCase(
             operation = "update",
             method = "PATCH",
             path = "/v1/mcp/servers/{id}/installations/{installationId}",
-            label = "all params",
+            label = "required params",
             run = ::_smokeCase115,
+        ),
+        SmokeCase(
+            operation = "update",
+            method = "PATCH",
+            path = "/v1/mcp/servers/{id}/installations/{installationId}",
+            label = "all params",
+            run = ::_smokeCase116,
         ),
         SmokeCase(
             operation = "delete",
             method = "DELETE",
             path = "/v1/mcp/servers/{id}/installations/{installationId}",
-            run = ::_smokeCase116,
+            run = ::_smokeCase117,
         ),
         SmokeCase(
             operation = "createAccessGroup",
             method = "POST",
             path = "/v1/mcp/servers/{id}/installations/{installationId}/access-group",
-            run = ::_smokeCase117,
+            run = ::_smokeCase118,
         ),
         SmokeCase(
             operation = "deleteAccessGroup",
             method = "DELETE",
             path = "/v1/mcp/servers/{id}/installations/{installationId}/access-group",
-            run = ::_smokeCase118,
+            run = ::_smokeCase119,
         ),
         SmokeCase(
             operation = "listAllApiDocuments",
             method = "GET",
             path = "/v1/apis",
             label = "async client",
-            run = ::_smokeCase119,
+            run = ::_smokeCase120,
         ),
     )
 
