@@ -21,8 +21,12 @@ import java.util.Collections
 import java.util.Objects
 
 /**
- * Start a build. Omit `version` to build the current work — the open draft, else the latest version
- * — and the resolved version comes back in the response.
+ * Start a build with the SDK's saved config. Every input is optional: `version` is the version of
+ * the linked API description to build (default: its latest version), `customCodeRef` the branch,
+ * tag or commit each language merges as custom code (default: each language's `scalar-next`
+ * branch), and `languages` the languages to build (default: every language the config declares).
+ * The response names the version built. A 503 means the custom code could not be read from GitHub
+ * and nothing was built; try again.
  */
 class SdkBuildParams
 private constructor(
@@ -31,6 +35,12 @@ private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun customCodeRef(): String? = body.customCodeRef()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -45,6 +55,13 @@ private constructor(
     fun version(): String? = body.version()
 
     fun uid(): String? = uid
+
+    /**
+     * Returns the raw JSON value of [customCodeRef].
+     *
+     * Unlike [customCodeRef], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _customCodeRef(): JsonField<String> = body._customCodeRef()
 
     /**
      * Returns the raw JSON value of [languages].
@@ -100,10 +117,24 @@ private constructor(
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [customCodeRef]
          * - [languages]
          * - [version]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        fun customCodeRef(customCodeRef: String) = apply { body.customCodeRef(customCodeRef) }
+
+        /**
+         * Sets [Builder.customCodeRef] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.customCodeRef] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun customCodeRef(customCodeRef: JsonField<String>) = apply {
+            body.customCodeRef(customCodeRef)
+        }
 
         fun languages(languages: List<Language>) = apply { body.languages(languages) }
 
@@ -276,10 +307,11 @@ private constructor(
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
-    @com.fasterxml.jackson.annotation.JsonPropertyOrder("languages", "version")
+    @com.fasterxml.jackson.annotation.JsonPropertyOrder("customCodeRef", "languages", "version")
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
+        private val customCodeRef: JsonField<String>,
         private val languages: JsonField<List<Language>>,
         private val version: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -287,11 +319,20 @@ private constructor(
 
         @JsonCreator
         private constructor(
+            @JsonProperty("customCodeRef")
+            @ExcludeMissing
+            customCodeRef: JsonField<String> = JsonMissing.of(),
             @JsonProperty("languages")
             @ExcludeMissing
             languages: JsonField<List<Language>> = JsonMissing.of(),
             @JsonProperty("version") @ExcludeMissing version: JsonField<String> = JsonMissing.of(),
-        ) : this(languages, version, mutableMapOf())
+        ) : this(customCodeRef, languages, version, mutableMapOf())
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun customCodeRef(): String? = customCodeRef.getNullable("customCodeRef")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -304,6 +345,16 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun version(): String? = version.getNullable("version")
+
+        /**
+         * Returns the raw JSON value of [customCodeRef].
+         *
+         * Unlike [customCodeRef], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("customCodeRef")
+        @ExcludeMissing
+        fun _customCodeRef(): JsonField<String> = customCodeRef
 
         /**
          * Returns the raw JSON value of [languages].
@@ -342,14 +393,29 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
+            private var customCodeRef: JsonField<String> = JsonMissing.of()
             private var languages: JsonField<MutableList<Language>>? = null
             private var version: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             internal fun from(body: Body) = apply {
+                customCodeRef = body.customCodeRef
                 languages = body.languages.map { it.toMutableList() }
                 version = body.version
                 additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            fun customCodeRef(customCodeRef: String) = customCodeRef(JsonField.of(customCodeRef))
+
+            /**
+             * Sets [Builder.customCodeRef] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.customCodeRef] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun customCodeRef(customCodeRef: JsonField<String>) = apply {
+                this.customCodeRef = customCodeRef
             }
 
             fun languages(languages: List<Language>) = languages(JsonField.of(languages))
@@ -414,6 +480,7 @@ private constructor(
              */
             fun build(): Body =
                 Body(
+                    customCodeRef,
                     (languages ?: JsonMissing.of()).map { it.toImmutable() },
                     version,
                     additionalProperties.toMutableMap(),
@@ -436,6 +503,7 @@ private constructor(
                 return@apply
             }
 
+            customCodeRef()
             languages()?.forEach { it.validate() }
             version()
             validated = true
@@ -456,7 +524,8 @@ private constructor(
          * Used for best match union deserialization.
          */
         internal fun validity(): Int =
-            (languages.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (customCodeRef.asKnown() == null) 0 else 1) +
+                (languages.asKnown()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (version.asKnown() == null) 0 else 1)
 
         override fun equals(other: Any?): Boolean {
@@ -465,17 +534,20 @@ private constructor(
             }
 
             return other is Body &&
+                customCodeRef == other.customCodeRef &&
                 languages == other.languages &&
                 version == other.version &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(languages, version, additionalProperties) }
+        private val hashCode: Int by lazy {
+            Objects.hash(customCodeRef, languages, version, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{languages=$languages, version=$version, additionalProperties=$additionalProperties}"
+            "Body{customCodeRef=$customCodeRef, languages=$languages, version=$version, additionalProperties=$additionalProperties}"
     }
 
     class Language @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
