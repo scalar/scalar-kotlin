@@ -60,7 +60,7 @@ class QueryParams private constructor(private val map: Map<String, List<String>>
                                     is JsonArray,
                                     is JsonObject ->
                                         throw IllegalArgumentException(
-                                            "Cannot comma separate non-primitives in query params"
+                                            "Cannot comma separate non-primitives in query params",
                                         )
                                 }
                             }

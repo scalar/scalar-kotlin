@@ -107,7 +107,7 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(
-            registryCreateApiDocumentVersionParams: RegistryCreateApiDocumentVersionParams
+            registryCreateApiDocumentVersionParams: RegistryCreateApiDocumentVersionParams,
         ) = apply {
             namespace = registryCreateApiDocumentVersionParams.namespace
             slug = registryCreateApiDocumentVersionParams.slug

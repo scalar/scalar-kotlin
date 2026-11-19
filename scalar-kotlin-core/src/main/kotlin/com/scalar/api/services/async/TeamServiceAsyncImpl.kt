@@ -63,10 +63,10 @@ class TeamServiceAsyncImpl internal constructor(private val clientOptions: Clien
         }
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): TeamServiceAsync.WithRawResponse =
             TeamServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         /** Teams */

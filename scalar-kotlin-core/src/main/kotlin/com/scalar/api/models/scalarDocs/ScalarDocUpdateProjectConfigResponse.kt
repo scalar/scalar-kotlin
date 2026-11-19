@@ -108,7 +108,7 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(
-            scalarDocUpdateProjectConfigResponse: ScalarDocUpdateProjectConfigResponse
+            scalarDocUpdateProjectConfigResponse: ScalarDocUpdateProjectConfigResponse,
         ) = apply {
             baseToken = scalarDocUpdateProjectConfigResponse.baseToken
             commitSha = scalarDocUpdateProjectConfigResponse.commitSha

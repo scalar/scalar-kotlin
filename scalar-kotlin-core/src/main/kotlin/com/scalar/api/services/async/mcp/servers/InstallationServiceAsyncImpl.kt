@@ -92,10 +92,10 @@ class InstallationServiceAsyncImpl internal constructor(private val clientOption
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): InstallationServiceAsync.WithRawResponse =
             InstallationServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         private val retrieveHandler: Handler<McpInstallation> =

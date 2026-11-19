@@ -215,7 +215,7 @@ interface RegistryServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): RegistryServiceAsync.WithRawResponse
 
         /**
@@ -345,7 +345,7 @@ interface RegistryServiceAsync {
         /** @see listAllApiDocuments */
         @MustBeClosed
         suspend fun listAllApiDocuments(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): HttpResponseFor<List<ApiDocument>> =
             listAllApiDocuments(RegistryListAllApiDocumentsParams.none(), requestOptions)
 

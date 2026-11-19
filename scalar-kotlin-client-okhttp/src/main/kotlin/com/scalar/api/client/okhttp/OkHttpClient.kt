@@ -105,7 +105,7 @@ class OkHttpClient internal constructor(private val okHttpClient: okhttp3.OkHttp
                         // Closed if the coroutine was cancelled before it could take the response.
                         continuation.resume(response) { response.close() }
                     }
-                }
+                },
             )
         }
 
@@ -212,7 +212,7 @@ class OkHttpClient internal constructor(private val okHttpClient: okhttp3.OkHttp
                                     maxIdleConnections,
                                     keepAliveDuration.toNanos(),
                                     TimeUnit.NANOSECONDS,
-                                )
+                                ),
                             )
                         } else {
                             check((maxIdleConnections != null) == (keepAliveDuration != null)) {
@@ -237,7 +237,7 @@ class OkHttpClient internal constructor(private val okHttpClient: okhttp3.OkHttp
                         // We usually make all our requests to the same host so it makes sense to
                         // raise the per-host limit to the overall limit.
                         dispatcher.maxRequestsPerHost = dispatcher.maxRequests
-                    }
+                    },
             )
     }
 }

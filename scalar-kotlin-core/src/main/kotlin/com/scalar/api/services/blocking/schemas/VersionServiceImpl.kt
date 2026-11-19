@@ -57,10 +57,10 @@ class VersionServiceImpl internal constructor(private val clientOptions: ClientO
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): VersionService.WithRawResponse =
             VersionServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         private val createHandler: Handler<VersionCreateResponse> =

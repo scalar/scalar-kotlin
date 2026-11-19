@@ -56,7 +56,7 @@ class MemberServiceImpl internal constructor(private val clientOptions: ClientOp
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): MemberService.WithRawResponse =
             MemberServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 

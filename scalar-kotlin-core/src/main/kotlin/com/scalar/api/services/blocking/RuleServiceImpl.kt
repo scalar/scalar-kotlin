@@ -95,7 +95,7 @@ class RuleServiceImpl internal constructor(private val clientOptions: ClientOpti
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): RuleService.WithRawResponse =
             RuleServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 

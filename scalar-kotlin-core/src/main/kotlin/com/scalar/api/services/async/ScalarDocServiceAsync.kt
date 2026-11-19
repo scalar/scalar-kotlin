@@ -271,7 +271,7 @@ interface ScalarDocServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): ScalarDocServiceAsync.WithRawResponse
 
         /**
@@ -334,7 +334,7 @@ interface ScalarDocServiceAsync {
         /** @see listGuides */
         @MustBeClosed
         suspend fun listGuides(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): HttpResponseFor<List<GithubProject>> =
             listGuides(ScalarDocListGuidesParams.none(), requestOptions)
 
@@ -437,7 +437,7 @@ interface ScalarDocServiceAsync {
         /** @see listProjects */
         @MustBeClosed
         suspend fun listProjects(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): HttpResponseFor<ScalarDocListProjectsResponse> =
             listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 

@@ -57,7 +57,19 @@ private constructor(
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    fun cask(): Boolean? = body.cask()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun registry(): String? = body.registry()
+
+    /**
+     * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun replaceFormula(): Boolean? = body.replaceFormula()
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -104,11 +116,25 @@ private constructor(
     fun _authMethod(): JsonField<AuthMethod> = body._authMethod()
 
     /**
+     * Returns the raw JSON value of [cask].
+     *
+     * Unlike [cask], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _cask(): JsonField<Boolean> = body._cask()
+
+    /**
      * Returns the raw JSON value of [registry].
      *
      * Unlike [registry], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _registry(): JsonField<String> = body._registry()
+
+    /**
+     * Returns the raw JSON value of [replaceFormula].
+     *
+     * Unlike [replaceFormula], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _replaceFormula(): JsonField<Boolean> = body._replaceFormula()
 
     /**
      * Returns the raw JSON value of [tag].
@@ -181,7 +207,7 @@ private constructor(
          * - [access]
          * - [artifactId]
          * - [authMethod]
-         * - [registry]
+         * - [cask]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -231,6 +257,16 @@ private constructor(
          */
         fun authMethod(authMethod: JsonField<AuthMethod>) = apply { body.authMethod(authMethod) }
 
+        fun cask(cask: Boolean) = apply { body.cask(cask) }
+
+        /**
+         * Sets [Builder.cask] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.cask] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun cask(cask: JsonField<Boolean>) = apply { body.cask(cask) }
+
         fun registry(registry: String) = apply { body.registry(registry) }
 
         /**
@@ -240,6 +276,19 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun registry(registry: JsonField<String>) = apply { body.registry(registry) }
+
+        fun replaceFormula(replaceFormula: Boolean) = apply { body.replaceFormula(replaceFormula) }
+
+        /**
+         * Sets [Builder.replaceFormula] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.replaceFormula] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun replaceFormula(replaceFormula: JsonField<Boolean>) = apply {
+            body.replaceFormula(replaceFormula)
+        }
 
         fun tag(tag: String) = apply { body.tag(tag) }
 
@@ -419,7 +468,9 @@ private constructor(
         "access",
         "artifactId",
         "authMethod",
+        "cask",
         "registry",
+        "replaceFormula",
         "tag",
         "tapRepo",
     )
@@ -430,7 +481,9 @@ private constructor(
         private val access: JsonField<Access>,
         private val artifactId: JsonField<String>,
         private val authMethod: JsonField<AuthMethod>,
+        private val cask: JsonField<Boolean>,
         private val registry: JsonField<String>,
+        private val replaceFormula: JsonField<Boolean>,
         private val tag: JsonField<String>,
         private val tapRepo: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -448,9 +501,13 @@ private constructor(
             @JsonProperty("authMethod")
             @ExcludeMissing
             authMethod: JsonField<AuthMethod> = JsonMissing.of(),
+            @JsonProperty("cask") @ExcludeMissing cask: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("registry")
             @ExcludeMissing
             registry: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("replaceFormula")
+            @ExcludeMissing
+            replaceFormula: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("tag") @ExcludeMissing tag: JsonField<String> = JsonMissing.of(),
             @JsonProperty("tapRepo") @ExcludeMissing tapRepo: JsonField<String> = JsonMissing.of(),
         ) : this(
@@ -458,7 +515,9 @@ private constructor(
             access,
             artifactId,
             authMethod,
+            cask,
             registry,
+            replaceFormula,
             tag,
             tapRepo,
             mutableMapOf(),
@@ -492,7 +551,19 @@ private constructor(
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
+        fun cask(): Boolean? = cask.getNullable("cask")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun registry(): String? = registry.getNullable("registry")
+
+        /**
+         * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun replaceFormula(): Boolean? = replaceFormula.getNullable("replaceFormula")
 
         /**
          * @throws ScalarInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -542,11 +613,28 @@ private constructor(
         fun _authMethod(): JsonField<AuthMethod> = authMethod
 
         /**
+         * Returns the raw JSON value of [cask].
+         *
+         * Unlike [cask], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("cask") @ExcludeMissing fun _cask(): JsonField<Boolean> = cask
+
+        /**
          * Returns the raw JSON value of [registry].
          *
          * Unlike [registry], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("registry") @ExcludeMissing fun _registry(): JsonField<String> = registry
+
+        /**
+         * Returns the raw JSON value of [replaceFormula].
+         *
+         * Unlike [replaceFormula], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("replaceFormula")
+        @ExcludeMissing
+        fun _replaceFormula(): JsonField<Boolean> = replaceFormula
 
         /**
          * Returns the raw JSON value of [tag].
@@ -594,7 +682,9 @@ private constructor(
             private var access: JsonField<Access> = JsonMissing.of()
             private var artifactId: JsonField<String> = JsonMissing.of()
             private var authMethod: JsonField<AuthMethod> = JsonMissing.of()
+            private var cask: JsonField<Boolean> = JsonMissing.of()
             private var registry: JsonField<String> = JsonMissing.of()
+            private var replaceFormula: JsonField<Boolean> = JsonMissing.of()
             private var tag: JsonField<String> = JsonMissing.of()
             private var tapRepo: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -604,7 +694,9 @@ private constructor(
                 access = body.access
                 artifactId = body.artifactId
                 authMethod = body.authMethod
+                cask = body.cask
                 registry = body.registry
+                replaceFormula = body.replaceFormula
                 tag = body.tag
                 tapRepo = body.tapRepo
                 additionalProperties = body.additionalProperties.toMutableMap()
@@ -659,6 +751,17 @@ private constructor(
                 this.authMethod = authMethod
             }
 
+            fun cask(cask: Boolean) = cask(JsonField.of(cask))
+
+            /**
+             * Sets [Builder.cask] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.cask] with a well-typed [Boolean] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun cask(cask: JsonField<Boolean>) = apply { this.cask = cask }
+
             fun registry(registry: String) = registry(JsonField.of(registry))
 
             /**
@@ -669,6 +772,20 @@ private constructor(
              * supported value.
              */
             fun registry(registry: JsonField<String>) = apply { this.registry = registry }
+
+            fun replaceFormula(replaceFormula: Boolean) =
+                replaceFormula(JsonField.of(replaceFormula))
+
+            /**
+             * Sets [Builder.replaceFormula] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.replaceFormula] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun replaceFormula(replaceFormula: JsonField<Boolean>) = apply {
+                this.replaceFormula = replaceFormula
+            }
 
             fun tag(tag: String) = tag(JsonField.of(tag))
 
@@ -729,7 +846,9 @@ private constructor(
                     access,
                     artifactId,
                     authMethod,
+                    cask,
                     registry,
+                    replaceFormula,
                     tag,
                     tapRepo,
                     additionalProperties.toMutableMap(),
@@ -756,7 +875,9 @@ private constructor(
             access()?.validate()
             artifactId()
             authMethod()?.validate()
+            cask()
             registry()
+            replaceFormula()
             tag()
             tapRepo()
             validated = true
@@ -781,7 +902,9 @@ private constructor(
                 (access.asKnown()?.validity() ?: 0) +
                 (if (artifactId.asKnown() == null) 0 else 1) +
                 (authMethod.asKnown()?.validity() ?: 0) +
+                (if (cask.asKnown() == null) 0 else 1) +
                 (if (registry.asKnown() == null) 0 else 1) +
+                (if (replaceFormula.asKnown() == null) 0 else 1) +
                 (if (tag.asKnown() == null) 0 else 1) +
                 (if (tapRepo.asKnown() == null) 0 else 1)
 
@@ -795,7 +918,9 @@ private constructor(
                 access == other.access &&
                 artifactId == other.artifactId &&
                 authMethod == other.authMethod &&
+                cask == other.cask &&
                 registry == other.registry &&
+                replaceFormula == other.replaceFormula &&
                 tag == other.tag &&
                 tapRepo == other.tapRepo &&
                 additionalProperties == other.additionalProperties
@@ -807,7 +932,9 @@ private constructor(
                 access,
                 artifactId,
                 authMethod,
+                cask,
                 registry,
+                replaceFormula,
                 tag,
                 tapRepo,
                 additionalProperties,
@@ -817,7 +944,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{publishOnMerge=$publishOnMerge, access=$access, artifactId=$artifactId, authMethod=$authMethod, registry=$registry, tag=$tag, tapRepo=$tapRepo, additionalProperties=$additionalProperties}"
+            "Body{publishOnMerge=$publishOnMerge, access=$access, artifactId=$artifactId, authMethod=$authMethod, cask=$cask, registry=$registry, replaceFormula=$replaceFormula, tag=$tag, tapRepo=$tapRepo, additionalProperties=$additionalProperties}"
     }
 
     class Language @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

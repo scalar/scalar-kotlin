@@ -43,7 +43,7 @@ internal class SchemaServiceTest {
                     .version("1.2.0")
                     .slug("customer")
                     .document(
-                        "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}"
+                        "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}",
                     )
                     .build()
             val schema = client.schemas().create(params)
@@ -67,7 +67,7 @@ internal class SchemaServiceTest {
                     .slug("customer")
                     .isPrivate(false)
                     .document(
-                        "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}"
+                        "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}",
                     )
                     .build()
             val schema = client.schemas().create(params)

@@ -27,7 +27,9 @@ internal class AccessGroupServiceTest {
                 AccessGroupCreateParams.builder()
                     .namespace("acme")
                     .slug("customer")
-                    .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+                    .accessGroup(
+                        AccessGroup.builder().accessGroupSlug("acme-api").build(),
+                    )
                     .build()
             val accessGroup = client.schemas().accessGroup().create(params)
         }
@@ -45,7 +47,9 @@ internal class AccessGroupServiceTest {
                 AccessGroupDeleteParams.builder()
                     .namespace("acme")
                     .slug("customer")
-                    .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+                    .accessGroup(
+                        AccessGroup.builder().accessGroupSlug("acme-api").build(),
+                    )
                     .build()
             val accessGroup = client.schemas().accessGroup().delete(params)
         }

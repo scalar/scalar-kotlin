@@ -199,7 +199,7 @@ val params =
         .version("1.2.0")
         .slug("acme-api")
         .document(
-            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}"
+            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}",
         )
         .build()
 val registry = client.registry().createApiDocument(params)
@@ -301,7 +301,7 @@ val params =
         .slug("acme-api")
         .semver("1.2.0")
         .document(
-            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}"
+            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}",
         )
         .build()
 val registry = client.registry().updateApiDocumentVersion(params)
@@ -387,7 +387,7 @@ val params =
         .slug("acme-api")
         .version("1.2.0")
         .document(
-            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}"
+            "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}",
         )
         .build()
 val registry = client.registry().createApiDocumentVersion(params)
@@ -416,7 +416,9 @@ val params =
     RegistryCreateApiDocumentAccessGroupParams.builder()
         .namespace("acme")
         .slug("acme-api")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+        .accessGroup(
+            AccessGroup.builder().accessGroupSlug("acme-api").build(),
+        )
         .build()
 val registry = client.registry().createApiDocumentAccessGroup(params)
 
@@ -444,7 +446,9 @@ val params =
     RegistryDeleteApiDocumentAccessGroupParams.builder()
         .namespace("acme")
         .slug("acme-api")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+        .accessGroup(
+            AccessGroup.builder().accessGroupSlug("acme-api").build(),
+        )
         .build()
 val registry = client.registry().deleteApiDocumentAccessGroup(params)
 
@@ -502,7 +506,7 @@ val params =
         .version("1.2.0")
         .slug("customer")
         .document(
-            "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}"
+            "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}",
         )
         .build()
 val schema = client.schemas().create(params)
@@ -627,7 +631,7 @@ val params =
         .slug("customer")
         .version("1.2.0")
         .document(
-            "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}"
+            "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"examples\":[\"Acme\"]}}}",
         )
         .build()
 val version = client.schemas().version().create(params)
@@ -660,7 +664,9 @@ val params =
     AccessGroupCreateParams.builder()
         .namespace("acme")
         .slug("customer")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+        .accessGroup(
+            AccessGroup.builder().accessGroupSlug("acme-api").build(),
+        )
         .build()
 val accessGroup = client.schemas().accessGroup().create(params)
 
@@ -688,7 +694,9 @@ val params =
     AccessGroupDeleteParams.builder()
         .namespace("acme")
         .slug("customer")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+        .accessGroup(
+            AccessGroup.builder().accessGroupSlug("acme-api").build(),
+        )
         .build()
 val accessGroup = client.schemas().accessGroup().delete(params)
 
@@ -802,7 +810,7 @@ val params =
                 .cardBackground("#fff")
                 .buttonColor("#fff")
                 .buttonBackground("#0f0f0f")
-                .build()
+                .build(),
         )
         .page(
             LoginPortalPage.builder()
@@ -820,7 +828,7 @@ val params =
                 .formTitle("Scalar Private Docs")
                 .formDescription("Login to access your documentation")
                 .formImage("")
-                .build()
+                .build(),
         )
         .build()
 val loginPortal = client.loginPortals().create(params)
@@ -1135,7 +1143,9 @@ val params =
     RuleCreateRulesetAccessGroupParams.builder()
         .namespace("acme")
         .slug("acme-rules")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+        .accessGroup(
+            AccessGroup.builder().accessGroupSlug("acme-api").build(),
+        )
         .build()
 val rule = client.rules().createRulesetAccessGroup(params)
 
@@ -1163,7 +1173,9 @@ val params =
     RuleDeleteRulesetAccessGroupParams.builder()
         .namespace("acme")
         .slug("acme-rules")
-        .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+        .accessGroup(
+            AccessGroup.builder().accessGroupSlug("acme-api").build(),
+        )
         .build()
 val rule = client.rules().deleteRulesetAccessGroup(params)
 

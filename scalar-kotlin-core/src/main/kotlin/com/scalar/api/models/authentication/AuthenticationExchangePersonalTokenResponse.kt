@@ -27,7 +27,7 @@ private constructor(
     private constructor(
         @JsonProperty("accessToken")
         @ExcludeMissing
-        accessToken: JsonField<String> = JsonMissing.of()
+        accessToken: JsonField<String> = JsonMissing.of(),
     ) : this(accessToken, mutableMapOf())
 
     /**
@@ -76,7 +76,8 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(
-            authenticationExchangePersonalTokenResponse: AuthenticationExchangePersonalTokenResponse
+            authenticationExchangePersonalTokenResponse:
+                AuthenticationExchangePersonalTokenResponse,
         ) = apply {
             accessToken = authenticationExchangePersonalTokenResponse.accessToken
             additionalProperties =

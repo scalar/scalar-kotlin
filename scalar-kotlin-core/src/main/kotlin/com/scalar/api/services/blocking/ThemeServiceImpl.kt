@@ -73,7 +73,7 @@ class ThemeServiceImpl internal constructor(private val clientOptions: ClientOpt
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): ThemeService.WithRawResponse =
             ThemeServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 

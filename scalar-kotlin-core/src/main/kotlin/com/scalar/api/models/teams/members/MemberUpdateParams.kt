@@ -262,7 +262,7 @@ private constructor(
 
         @JsonCreator
         private constructor(
-            @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of()
+            @JsonProperty("role") @ExcludeMissing role: JsonField<Role> = JsonMissing.of(),
         ) : this(role, mutableMapOf())
 
         /**

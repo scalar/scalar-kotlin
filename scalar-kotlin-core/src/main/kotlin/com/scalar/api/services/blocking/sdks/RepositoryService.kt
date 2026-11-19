@@ -74,7 +74,7 @@ interface RepositoryService {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): RepositoryService.WithRawResponse
 
         /**

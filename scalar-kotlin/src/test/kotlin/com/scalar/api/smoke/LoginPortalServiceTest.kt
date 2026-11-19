@@ -99,7 +99,7 @@ internal class LoginPortalServiceTest {
                             .cardBackground("#fff")
                             .buttonColor("#fff")
                             .buttonBackground("#0f0f0f")
-                            .build()
+                            .build(),
                     )
                     .page(
                         LoginPortalPage.builder()
@@ -117,7 +117,7 @@ internal class LoginPortalServiceTest {
                             .formTitle("Scalar Private Docs")
                             .formDescription("Login to access your documentation")
                             .formImage("")
-                            .build()
+                            .build(),
                     )
                     .build()
             val loginPortal = client.loginPortals().create(params)

@@ -320,7 +320,7 @@ sealed class JsonValue : JsonField<Nothing>() {
          *         mapOf(
          *             "a" to 1,
          *             "b" to 2,
-         *         )
+         *         ),
          *     )
          *
          * // Create an arbitrarily nested JSON equivalent to:
@@ -333,7 +333,7 @@ sealed class JsonValue : JsonField<Nothing>() {
          *         mapOf(
          *             "a" to listOf(1, 2),
          *             "b" to listOf(3, 4),
-         *         )
+         *         ),
          *     )
          * ```
          *
@@ -362,7 +362,7 @@ sealed class JsonValue : JsonField<Nothing>() {
                     JsonArray.of(node.elements().asSequence().map { fromJsonNode(it) }.toList())
                 OBJECT ->
                     JsonObject.of(
-                        node.fields().asSequence().map { it.key to fromJsonNode(it.value) }.toMap()
+                        node.fields().asSequence().map { it.key to fromJsonNode(it.value) }.toMap(),
                     )
                 BINARY,
                 POJO,
@@ -386,7 +386,7 @@ sealed class JsonValue : JsonField<Nothing>() {
  */
 class KnownValue<T : Any>
 private constructor(
-    @com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: T
+    @com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: T,
 ) : JsonField<T>() {
 
     override fun equals(other: Any?): Boolean {
@@ -457,7 +457,7 @@ class JsonNull : JsonValue() {
 /** A [JsonValue] representing a JSON boolean value. */
 class JsonBoolean
 private constructor(
-    @get:com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: Boolean
+    @get:com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: Boolean,
 ) : JsonValue() {
 
     override fun equals(other: Any?): Boolean {
@@ -482,7 +482,7 @@ private constructor(
 /** A [JsonValue] representing a JSON number value. */
 class JsonNumber
 private constructor(
-    @get:com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: Number
+    @get:com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: Number,
 ) : JsonValue() {
 
     override fun equals(other: Any?): Boolean {
@@ -507,7 +507,7 @@ private constructor(
 /** A [JsonValue] representing a JSON string value. */
 class JsonString
 private constructor(
-    @get:com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: String
+    @get:com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: String,
 ) : JsonValue() {
 
     override fun equals(other: Any?): Boolean {
@@ -534,7 +534,7 @@ class JsonArray
 private constructor(
     @get:com.fasterxml.jackson.annotation.JsonValue
     @get:JvmName("values")
-    val values: List<JsonValue>
+    val values: List<JsonValue>,
 ) : JsonValue() {
 
     override fun equals(other: Any?): Boolean {
@@ -561,7 +561,7 @@ class JsonObject
 private constructor(
     @get:com.fasterxml.jackson.annotation.JsonValue
     @get:JvmName("values")
-    val values: Map<String, JsonValue>
+    val values: Map<String, JsonValue>,
 ) : JsonValue() {
 
     override fun equals(other: Any?): Boolean {

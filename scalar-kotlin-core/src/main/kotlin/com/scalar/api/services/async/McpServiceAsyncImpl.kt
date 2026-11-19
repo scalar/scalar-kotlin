@@ -31,10 +31,10 @@ class McpServiceAsyncImpl internal constructor(private val clientOptions: Client
         }
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): McpServiceAsync.WithRawResponse =
             McpServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         /** MCP */

@@ -86,10 +86,10 @@ class SchemaServiceAsyncImpl internal constructor(private val clientOptions: Cli
         }
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): SchemaServiceAsync.WithRawResponse =
             SchemaServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         /** Schemas */
