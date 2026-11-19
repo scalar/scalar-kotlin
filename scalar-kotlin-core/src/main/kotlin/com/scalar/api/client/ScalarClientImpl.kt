@@ -178,7 +178,7 @@ class ScalarClientImpl(private val clientOptions: ClientOptions) : ScalarClient 
         }
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): ScalarClient.WithRawResponse =
             ScalarClientImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 

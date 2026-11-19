@@ -91,7 +91,7 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(
-            registryUpdateApiDocumentVersionResponse: RegistryUpdateApiDocumentVersionResponse
+            registryUpdateApiDocumentVersionResponse: RegistryUpdateApiDocumentVersionResponse,
         ) = apply {
             jsonSha = registryUpdateApiDocumentVersionResponse.jsonSha
             yamlSha = registryUpdateApiDocumentVersionResponse.yamlSha

@@ -85,7 +85,7 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(
-            registryUpdateApiDocumentVersionParams: RegistryUpdateApiDocumentVersionParams
+            registryUpdateApiDocumentVersionParams: RegistryUpdateApiDocumentVersionParams,
         ) = apply {
             namespace = registryUpdateApiDocumentVersionParams.namespace
             slug = registryUpdateApiDocumentVersionParams.slug
@@ -287,7 +287,9 @@ private constructor(
 
         @JsonCreator
         private constructor(
-            @JsonProperty("document") @ExcludeMissing document: JsonField<String> = JsonMissing.of()
+            @JsonProperty("document")
+            @ExcludeMissing
+            document: JsonField<String> = JsonMissing.of(),
         ) : this(document, mutableMapOf())
 
         /**

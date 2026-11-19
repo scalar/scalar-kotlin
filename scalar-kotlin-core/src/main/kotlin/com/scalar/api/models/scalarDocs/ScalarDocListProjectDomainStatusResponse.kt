@@ -128,7 +128,7 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(
-            scalarDocListProjectDomainStatusResponse: ScalarDocListProjectDomainStatusResponse
+            scalarDocListProjectDomainStatusResponse: ScalarDocListProjectDomainStatusResponse,
         ) = apply {
             domain = scalarDocListProjectDomainStatusResponse.domain
             expected = scalarDocListProjectDomainStatusResponse.expected

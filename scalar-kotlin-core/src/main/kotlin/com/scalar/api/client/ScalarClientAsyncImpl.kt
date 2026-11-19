@@ -182,10 +182,10 @@ class ScalarClientAsyncImpl(private val clientOptions: ClientOptions) : ScalarCl
         }
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): ScalarClientAsync.WithRawResponse =
             ScalarClientAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         /** Registry */

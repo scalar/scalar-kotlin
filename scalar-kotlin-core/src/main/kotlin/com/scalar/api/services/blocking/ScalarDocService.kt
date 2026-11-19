@@ -425,7 +425,7 @@ interface ScalarDocService {
         /** @see listProjects */
         @MustBeClosed
         fun listProjects(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): HttpResponseFor<ScalarDocListProjectsResponse> =
             listProjects(ScalarDocListProjectsParams.none(), requestOptions)
 

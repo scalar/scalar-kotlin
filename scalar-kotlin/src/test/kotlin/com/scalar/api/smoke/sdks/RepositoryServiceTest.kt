@@ -107,6 +107,8 @@ internal class RepositoryServiceTest {
                     .tag("latest")
                     .artifactId("scalar-galaxy")
                     .tapRepo("scalar/homebrew-tap")
+                    .cask(true)
+                    .replaceFormula(false)
                     .registry("npm")
                     .build()
             val repository = client.sdks().repositories().updatePublishing(params)

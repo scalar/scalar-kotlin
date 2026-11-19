@@ -47,7 +47,7 @@ class DomainServiceImpl internal constructor(private val clientOptions: ClientOp
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): DomainService.WithRawResponse =
             DomainServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 

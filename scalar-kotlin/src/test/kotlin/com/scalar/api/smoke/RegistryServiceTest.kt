@@ -84,7 +84,7 @@ internal class RegistryServiceTest {
                     .version("1.2.0")
                     .slug("acme-api")
                     .document(
-                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}"
+                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}",
                     )
                     .build()
             val registry = client.registry().createApiDocument(params)
@@ -109,7 +109,7 @@ internal class RegistryServiceTest {
                     .ruleset("extends: [\"spectral:oas\"]")
                     .isPrivate(false)
                     .document(
-                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}"
+                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}",
                     )
                     .build()
             val registry = client.registry().createApiDocument(params)
@@ -197,7 +197,7 @@ internal class RegistryServiceTest {
                     .slug("acme-api")
                     .semver("1.2.0")
                     .document(
-                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}"
+                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}",
                     )
                     .build()
             val registry = client.registry().updateApiDocumentVersion(params)
@@ -254,7 +254,7 @@ internal class RegistryServiceTest {
                     .slug("acme-api")
                     .version("1.2.0")
                     .document(
-                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}"
+                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}",
                     )
                     .build()
             val registry = client.registry().createApiDocumentVersion(params)
@@ -275,7 +275,7 @@ internal class RegistryServiceTest {
                     .slug("acme-api")
                     .version("1.2.0")
                     .document(
-                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}"
+                        "{\"openapi\":\"3.1.0\",\"info\":{\"title\":\"Acme API\",\"version\":\"1.2.0\"},\"paths\":{}}",
                     )
                     .force(false)
                     .build()
@@ -295,7 +295,9 @@ internal class RegistryServiceTest {
                 RegistryCreateApiDocumentAccessGroupParams.builder()
                     .namespace("acme")
                     .slug("acme-api")
-                    .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+                    .accessGroup(
+                        AccessGroup.builder().accessGroupSlug("acme-api").build(),
+                    )
                     .build()
             val registry = client.registry().createApiDocumentAccessGroup(params)
         }
@@ -313,7 +315,9 @@ internal class RegistryServiceTest {
                 RegistryDeleteApiDocumentAccessGroupParams.builder()
                     .namespace("acme")
                     .slug("acme-api")
-                    .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+                    .accessGroup(
+                        AccessGroup.builder().accessGroupSlug("acme-api").build(),
+                    )
                     .build()
             val registry = client.registry().deleteApiDocumentAccessGroup(params)
         }

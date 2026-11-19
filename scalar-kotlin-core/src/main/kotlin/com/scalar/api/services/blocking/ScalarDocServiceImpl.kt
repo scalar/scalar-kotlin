@@ -151,10 +151,10 @@ class ScalarDocServiceImpl internal constructor(private val clientOptions: Clien
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): ScalarDocService.WithRawResponse =
             ScalarDocServiceImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         private val createGuideHandler: Handler<ScalarDocCreateGuideResponse> =

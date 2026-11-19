@@ -115,7 +115,7 @@ interface AccessGroupServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): AccessGroupServiceAsync.WithRawResponse
 
         /** Access Groups */
@@ -134,7 +134,7 @@ interface AccessGroupServiceAsync {
         /** @see create */
         @MustBeClosed
         suspend fun create(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): HttpResponseFor<AccessGroupCreateResponse> =
             create(AccessGroupCreateParams.none(), requestOptions)
 

@@ -64,7 +64,7 @@ private constructor(
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(
-            registryDeleteApiDocumentVersionParams: RegistryDeleteApiDocumentVersionParams
+            registryDeleteApiDocumentVersionParams: RegistryDeleteApiDocumentVersionParams,
         ) = apply {
             namespace = registryDeleteApiDocumentVersionParams.namespace
             slug = registryDeleteApiDocumentVersionParams.slug

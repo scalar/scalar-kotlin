@@ -48,7 +48,7 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(
-            scalarDocListProjectDomainStatusParams: ScalarDocListProjectDomainStatusParams
+            scalarDocListProjectDomainStatusParams: ScalarDocListProjectDomainStatusParams,
         ) = apply {
             slug = scalarDocListProjectDomainStatusParams.slug
             additionalHeaders = scalarDocListProjectDomainStatusParams.additionalHeaders.toBuilder()

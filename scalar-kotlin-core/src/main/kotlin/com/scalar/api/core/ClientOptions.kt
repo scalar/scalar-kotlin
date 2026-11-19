@@ -476,12 +476,12 @@ private constructor(
                                     .httpClient(httpClient)
                                     .clock(clock)
                                     .level(logLevel)
-                                    .build()
+                                    .build(),
                             )
                             .sleeper(sleeper)
                             .clock(clock)
                             .maxRetries(maxRetries)
-                            .build()
+                            .build(),
                     )
                     .build(),
                 checkJacksonVersionCompatibility,

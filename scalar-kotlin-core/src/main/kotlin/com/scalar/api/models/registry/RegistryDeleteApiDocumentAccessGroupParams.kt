@@ -60,7 +60,7 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(
-            registryDeleteApiDocumentAccessGroupParams: RegistryDeleteApiDocumentAccessGroupParams
+            registryDeleteApiDocumentAccessGroupParams: RegistryDeleteApiDocumentAccessGroupParams,
         ) = apply {
             namespace = registryDeleteApiDocumentAccessGroupParams.namespace
             slug = registryDeleteApiDocumentAccessGroupParams.slug

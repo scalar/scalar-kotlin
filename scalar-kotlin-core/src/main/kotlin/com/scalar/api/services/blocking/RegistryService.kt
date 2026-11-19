@@ -338,7 +338,7 @@ interface RegistryService {
         /** @see listAllApiDocuments */
         @MustBeClosed
         fun listAllApiDocuments(
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): HttpResponseFor<List<ApiDocument>> =
             listAllApiDocuments(RegistryListAllApiDocumentsParams.none(), requestOptions)
 

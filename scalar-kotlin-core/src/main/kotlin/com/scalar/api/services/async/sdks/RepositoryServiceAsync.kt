@@ -77,7 +77,7 @@ interface RepositoryServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): RepositoryServiceAsync.WithRawResponse
 
         /**

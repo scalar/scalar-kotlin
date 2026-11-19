@@ -71,7 +71,7 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(
-            authenticationExchangePersonalTokenParams: AuthenticationExchangePersonalTokenParams
+            authenticationExchangePersonalTokenParams: AuthenticationExchangePersonalTokenParams,
         ) = apply {
             body = authenticationExchangePersonalTokenParams.body.toBuilder()
             additionalHeaders =
@@ -257,7 +257,7 @@ private constructor(
         private constructor(
             @JsonProperty("personalToken")
             @ExcludeMissing
-            personalToken: JsonField<String> = JsonMissing.of()
+            personalToken: JsonField<String> = JsonMissing.of(),
         ) : this(personalToken, mutableMapOf())
 
         /**

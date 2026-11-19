@@ -101,10 +101,10 @@ class SdkServiceAsyncImpl internal constructor(private val clientOptions: Client
         }
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): SdkServiceAsync.WithRawResponse =
             SdkServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         /** SDKs */

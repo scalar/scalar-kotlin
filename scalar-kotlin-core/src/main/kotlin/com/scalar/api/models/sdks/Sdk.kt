@@ -603,7 +603,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @com.fasterxml.jackson.annotation.JsonValue
-        private val additionalProperties: Map<String, JsonValue>
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         @JsonAnyGetter

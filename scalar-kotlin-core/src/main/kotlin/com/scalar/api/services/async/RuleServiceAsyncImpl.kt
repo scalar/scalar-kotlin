@@ -96,10 +96,10 @@ class RuleServiceAsyncImpl internal constructor(private val clientOptions: Clien
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): RuleServiceAsync.WithRawResponse =
             RuleServiceAsyncImpl.WithRawResponseImpl(
-                clientOptions.toBuilder().apply(modifier).build()
+                clientOptions.toBuilder().apply(modifier).build(),
             )
 
         private val createRulesetHandler: Handler<Uid> = jsonHandler<Uid>(clientOptions.jsonMapper)

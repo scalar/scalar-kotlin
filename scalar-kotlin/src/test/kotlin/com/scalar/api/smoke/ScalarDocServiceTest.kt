@@ -149,13 +149,13 @@ internal class ScalarDocServiceTest {
                         ScalarDocCreateProjectParams.GithubRepository.builder()
                             .installationId(84L)
                             .repoId(123456789L)
-                            .build()
+                            .build(),
                     )
                     .bitbucketRepository(
                         ScalarDocCreateProjectParams.BitbucketRepository.builder()
                             .workspaceUuid("{12345678-1234-4234-8234-123456789abc}")
                             .repoUuid("{abcdef01-1234-4234-8234-123456789abc}")
-                            .build()
+                            .build(),
                     )
                     .build()
             val scalarDoc = client.scalarDocs().createProject(params)
@@ -204,8 +204,8 @@ internal class ScalarDocServiceTest {
                     .accessGroups(listOf("UakgbKJ5m9gl0JDMbcJqL"))
                     .loginPortalUid(
                         ScalarDocUpdateProjectParams.LoginPortalUid.ofNanoid(
-                            "UakgbKJ5m9gl0JDMbcJqL"
-                        )
+                            "UakgbKJ5m9gl0JDMbcJqL",
+                        ),
                     )
                     .activeThemeId("UakgbKJ5m9gl0JDMbcJqL")
                     .agentEnabled(true)

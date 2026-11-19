@@ -52,7 +52,7 @@ class InviteServiceImpl internal constructor(private val clientOptions: ClientOp
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): InviteService.WithRawResponse =
             InviteServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 

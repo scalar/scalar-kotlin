@@ -154,7 +154,9 @@ internal class RuleServiceTest {
                 RuleCreateRulesetAccessGroupParams.builder()
                     .namespace("acme")
                     .slug("acme-rules")
-                    .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+                    .accessGroup(
+                        AccessGroup.builder().accessGroupSlug("acme-api").build(),
+                    )
                     .build()
             val rule = client.rules().createRulesetAccessGroup(params)
         }
@@ -172,7 +174,9 @@ internal class RuleServiceTest {
                 RuleDeleteRulesetAccessGroupParams.builder()
                     .namespace("acme")
                     .slug("acme-rules")
-                    .accessGroup(AccessGroup.builder().accessGroupSlug("acme-api").build())
+                    .accessGroup(
+                        AccessGroup.builder().accessGroupSlug("acme-api").build(),
+                    )
                     .build()
             val rule = client.rules().deleteRulesetAccessGroup(params)
         }

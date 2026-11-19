@@ -83,7 +83,12 @@ internal fun multipartFormData(
                         }
 
                     addPart(
-                        MultipartBody.Part.create(name, field.filename, field.contentType, partBody)
+                        MultipartBody.Part.create(
+                            name,
+                            field.filename,
+                            field.contentType,
+                            partBody,
+                        ),
                     )
                 }
             }
@@ -136,12 +141,12 @@ private fun serializePart(name: String, node: JsonNode): Sequence<Pair<String, I
                                     JsonNodeType.OBJECT,
                                     JsonNodeType.POJO ->
                                         throw ScalarInvalidDataException(
-                                            "Unexpected JsonNode type in array: ${element.nodeType}"
+                                            "Unexpected JsonNode type in array: ${element.nodeType}",
                                         )
                                 }
                             }
                             .joinToString(",")
-                            .byteInputStream()
+                            .byteInputStream(),
                 )
         JsonNodeType.OBJECT ->
             node.fields().asSequence().flatMap { (key, value) ->

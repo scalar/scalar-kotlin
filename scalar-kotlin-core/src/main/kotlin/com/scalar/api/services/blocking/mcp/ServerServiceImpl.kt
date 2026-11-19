@@ -80,7 +80,7 @@ class ServerServiceImpl internal constructor(private val clientOptions: ClientOp
         }
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): ServerService.WithRawResponse =
             ServerServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 

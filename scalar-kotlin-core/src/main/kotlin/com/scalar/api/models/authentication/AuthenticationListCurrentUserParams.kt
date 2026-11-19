@@ -40,7 +40,7 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         internal fun from(
-            authenticationListCurrentUserParams: AuthenticationListCurrentUserParams
+            authenticationListCurrentUserParams: AuthenticationListCurrentUserParams,
         ) = apply {
             additionalHeaders = authenticationListCurrentUserParams.additionalHeaders.toBuilder()
             additionalQueryParams =

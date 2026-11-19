@@ -81,7 +81,7 @@ class SchemaServiceImpl internal constructor(private val clientOptions: ClientOp
         }
 
         override fun withOptions(
-            modifier: (ClientOptions.Builder) -> Unit
+            modifier: (ClientOptions.Builder) -> Unit,
         ): SchemaService.WithRawResponse =
             SchemaServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
