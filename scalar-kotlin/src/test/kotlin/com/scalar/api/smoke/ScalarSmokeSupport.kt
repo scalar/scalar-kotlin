@@ -39,7 +39,7 @@ internal object ScalarSmokeSupport {
      * only for generator tooling). The runner refuses a list whose digest differs, so a list left
      * by an earlier generation is never trusted.
      */
-    const val SMOKE_CASE_LIST_DIGEST = "eca13a3838ad8041"
+    const val SMOKE_CASE_LIST_DIGEST = "1ff7b2bfe26ea132"
 
     private val baseUrl: String? = System.getenv("TEST_API_BASE_URL")?.takeIf { it.isNotBlank() }
 

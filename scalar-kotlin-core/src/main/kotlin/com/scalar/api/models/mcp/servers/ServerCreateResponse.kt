@@ -15,43 +15,24 @@ import com.scalar.api.errors.ScalarInvalidDataException
 import java.util.Collections
 import java.util.Objects
 
-@com.fasterxml.jackson.annotation.JsonPropertyOrder("installation", "server")
+@com.fasterxml.jackson.annotation.JsonPropertyOrder("server")
 class ServerCreateResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
-    private val installation: JsonField<McpInstallation>,
     private val server: JsonField<McpServer>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("installation")
-        @ExcludeMissing
-        installation: JsonField<McpInstallation> = JsonMissing.of(),
         @JsonProperty("server") @ExcludeMissing server: JsonField<McpServer> = JsonMissing.of(),
-    ) : this(installation, server, mutableMapOf())
-
-    /**
-     * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
-     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-     */
-    fun installation(): McpInstallation = installation.getRequired("installation")
+    ) : this(server, mutableMapOf())
 
     /**
      * @throws ScalarInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun server(): McpServer = server.getRequired("server")
-
-    /**
-     * Returns the raw JSON value of [installation].
-     *
-     * Unlike [installation], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    @JsonProperty("installation")
-    @ExcludeMissing
-    fun _installation(): JsonField<McpInstallation> = installation
 
     /**
      * Returns the raw JSON value of [server].
@@ -79,7 +60,6 @@ private constructor(
          *
          * The following fields are required:
          * ```kotlin
-         * .installation()
          * .server()
          * ```
          */
@@ -89,27 +69,12 @@ private constructor(
     /** A builder for [ServerCreateResponse]. */
     class Builder internal constructor() {
 
-        private var installation: JsonField<McpInstallation>? = null
         private var server: JsonField<McpServer>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         internal fun from(serverCreateResponse: ServerCreateResponse) = apply {
-            installation = serverCreateResponse.installation
             server = serverCreateResponse.server
             additionalProperties = serverCreateResponse.additionalProperties.toMutableMap()
-        }
-
-        fun installation(installation: McpInstallation) = installation(JsonField.of(installation))
-
-        /**
-         * Sets [Builder.installation] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.installation] with a well-typed [McpInstallation] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun installation(installation: JsonField<McpInstallation>) = apply {
-            this.installation = installation
         }
 
         fun server(server: McpServer) = server(JsonField.of(server))
@@ -149,7 +114,6 @@ private constructor(
          *
          * The following fields are required:
          * ```kotlin
-         * .installation()
          * .server()
          * ```
          *
@@ -157,7 +121,6 @@ private constructor(
          */
         fun build(): ServerCreateResponse =
             ServerCreateResponse(
-                checkRequired("installation", installation),
                 checkRequired("server", server),
                 additionalProperties.toMutableMap(),
             )
@@ -178,7 +141,6 @@ private constructor(
             return@apply
         }
 
-        installation().validate()
         server().validate()
         validated = true
     }
@@ -196,8 +158,7 @@ private constructor(
      *
      * Used for best match union deserialization.
      */
-    internal fun validity(): Int =
-        (installation.asKnown()?.validity() ?: 0) + (server.asKnown()?.validity() ?: 0)
+    internal fun validity(): Int = (server.asKnown()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -205,15 +166,14 @@ private constructor(
         }
 
         return other is ServerCreateResponse &&
-            installation == other.installation &&
             server == other.server &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(installation, server, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(server, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ServerCreateResponse{installation=$installation, server=$server, additionalProperties=$additionalProperties}"
+        "ServerCreateResponse{server=$server, additionalProperties=$additionalProperties}"
 }

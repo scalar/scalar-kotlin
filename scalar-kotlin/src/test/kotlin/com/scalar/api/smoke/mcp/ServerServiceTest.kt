@@ -3,10 +3,7 @@
 package com.scalar.api.smoke.mcp
 
 import com.scalar.api.models.mcp.servers.ServerCreateParams
-import com.scalar.api.models.mcp.servers.ServerDeleteParams
 import com.scalar.api.models.mcp.servers.ServerListParams
-import com.scalar.api.models.mcp.servers.ServerRetrieveParams
-import com.scalar.api.models.mcp.servers.ServerUpdateParams
 import com.scalar.api.smoke.ScalarSmokeSupport
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -58,65 +55,6 @@ internal class ServerServiceTest {
                     .projectUids(listOf(""))
                     .build()
             val server = client.mcp().servers().create(params)
-        }
-    }
-
-    @Test
-    @DisplayName("retrieve")
-    fun retrieve() {
-        ScalarSmokeSupport.smokeCase(
-            "mcp.servers.retrieve:single",
-            "retrieve",
-            "/v1/mcp/servers/{id}",
-        ) { client ->
-            val params = ServerRetrieveParams.builder().id("42").build()
-            val server = client.mcp().servers().retrieve(params)
-        }
-    }
-
-    @Test
-    @DisplayName("update: only required params")
-    fun update() {
-        ScalarSmokeSupport.smokeCase(
-            "mcp.servers.update:required",
-            "update",
-            "/v1/mcp/servers/{id}",
-        ) { client ->
-            val params = ServerUpdateParams.builder().id("42").build()
-            val server = client.mcp().servers().update(params)
-        }
-    }
-
-    @Test
-    @DisplayName("update: required and optional params")
-    fun updateWithOptionalParams() {
-        ScalarSmokeSupport.smokeCase(
-            "mcp.servers.update:all",
-            "update",
-            "/v1/mcp/servers/{id}",
-        ) { client ->
-            val params =
-                ServerUpdateParams.builder()
-                    .id("42")
-                    .name("Acme MCP")
-                    .slug("acme-api")
-                    .operations(listOf(""))
-                    .docsPages(listOf(""))
-                    .build()
-            val server = client.mcp().servers().update(params)
-        }
-    }
-
-    @Test
-    @DisplayName("delete")
-    fun delete() {
-        ScalarSmokeSupport.smokeCase(
-            "mcp.servers.delete:single",
-            "delete",
-            "/v1/mcp/servers/{id}",
-        ) { client ->
-            val params = ServerDeleteParams.builder().id("42").build()
-            val server = client.mcp().servers().delete(params)
         }
     }
 }

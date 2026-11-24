@@ -4,7 +4,6 @@ package com.scalar.api.services.blocking.mcp
 
 import com.scalar.api.core.ClientOptions
 import com.scalar.api.core.RequestOptions
-import com.scalar.api.core.checkRequired
 import com.scalar.api.core.handlers.errorBodyHandler
 import com.scalar.api.core.handlers.errorHandler
 import com.scalar.api.core.handlers.jsonHandler
@@ -16,15 +15,10 @@ import com.scalar.api.core.http.HttpResponseFor
 import com.scalar.api.core.http.json
 import com.scalar.api.core.http.parseable
 import com.scalar.api.core.prepare
-import com.scalar.api.models.mcp.servers.McpServer
 import com.scalar.api.models.mcp.servers.ServerCreateParams
 import com.scalar.api.models.mcp.servers.ServerCreateResponse
-import com.scalar.api.models.mcp.servers.ServerDeleteParams
 import com.scalar.api.models.mcp.servers.ServerListParams
-import com.scalar.api.models.mcp.servers.ServerRetrieveParams
-import com.scalar.api.models.mcp.servers.ServerUpdateParams
-import com.scalar.api.services.blocking.mcp.servers.InstallationService
-import com.scalar.api.services.blocking.mcp.servers.InstallationServiceImpl
+import com.scalar.api.models.mcp.servers.ServerListResponse
 
 /** MCP */
 class ServerServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -34,17 +28,10 @@ class ServerServiceImpl internal constructor(private val clientOptions: ClientOp
         WithRawResponseImpl(clientOptions)
     }
 
-    private val installations: InstallationService by lazy {
-        InstallationServiceImpl(clientOptions)
-    }
-
     override fun withRawResponse(): ServerService.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ServerService =
         ServerServiceImpl(clientOptions.toBuilder().apply(modifier).build())
-
-    /** MCP */
-    override fun installations(): InstallationService = installations
 
     override fun create(
         params: ServerCreateParams,
@@ -53,21 +40,12 @@ class ServerServiceImpl internal constructor(private val clientOptions: ClientOp
         // post /v1/mcp/servers
         withRawResponse().create(params, requestOptions).parse()
 
-    override fun retrieve(params: ServerRetrieveParams, requestOptions: RequestOptions): McpServer =
-        // get /v1/mcp/servers/{id}
-        withRawResponse().retrieve(params, requestOptions).parse()
-
-    override fun update(params: ServerUpdateParams, requestOptions: RequestOptions): McpServer =
-        // patch /v1/mcp/servers/{id}
-        withRawResponse().update(params, requestOptions).parse()
-
-    override fun list(params: ServerListParams, requestOptions: RequestOptions): List<McpServer> =
+    override fun list(
+        params: ServerListParams,
+        requestOptions: RequestOptions,
+    ): List<ServerListResponse> =
         // get /v1/mcp/servers
         withRawResponse().list(params, requestOptions).parse()
-
-    override fun delete(params: ServerDeleteParams, requestOptions: RequestOptions): Any? =
-        // delete /v1/mcp/servers/{id}
-        withRawResponse().delete(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ServerService.WithRawResponse {
@@ -75,17 +53,10 @@ class ServerServiceImpl internal constructor(private val clientOptions: ClientOp
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
-        private val installations: InstallationService.WithRawResponse by lazy {
-            InstallationServiceImpl.WithRawResponseImpl(clientOptions)
-        }
-
         override fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit,
         ): ServerService.WithRawResponse =
             ServerServiceImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
-
-        /** MCP */
-        override fun installations(): InstallationService.WithRawResponse = installations
 
         private val createHandler: Handler<ServerCreateResponse> =
             jsonHandler<ServerCreateResponse>(clientOptions.jsonMapper)
@@ -115,74 +86,13 @@ class ServerServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val retrieveHandler: Handler<McpServer> =
-            jsonHandler<McpServer>(clientOptions.jsonMapper)
-
-        override fun retrieve(
-            params: ServerRetrieveParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<McpServer> {
-            // We check here instead of in the params builder because this can be specified
-            // positionally or in the params class.
-            checkRequired("id", params.id())
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("v1", "mcp", "servers", params._pathParam(0))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response
-                    .use { retrieveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
-        }
-
-        private val updateHandler: Handler<McpServer> =
-            jsonHandler<McpServer>(clientOptions.jsonMapper)
-
-        override fun update(
-            params: ServerUpdateParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<McpServer> {
-            // We check here instead of in the params builder because this can be specified
-            // positionally or in the params class.
-            checkRequired("id", params.id())
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.PATCH)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("v1", "mcp", "servers", params._pathParam(0))
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response
-                    .use { updateHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
-        }
-
-        private val listHandler: Handler<List<McpServer>> =
-            jsonHandler<List<McpServer>>(clientOptions.jsonMapper)
+        private val listHandler: Handler<List<ServerListResponse>> =
+            jsonHandler<List<ServerListResponse>>(clientOptions.jsonMapper)
 
         override fun list(
             params: ServerListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<McpServer>> {
+        ): HttpResponseFor<List<ServerListResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -200,30 +110,6 @@ class ServerServiceImpl internal constructor(private val clientOptions: ClientOp
                             it.forEach { it.validate() }
                         }
                     }
-            }
-        }
-
-        private val deleteHandler: Handler<Any?> = jsonHandler<Any?>(clientOptions.jsonMapper)
-
-        override fun delete(
-            params: ServerDeleteParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<Any?> {
-            // We check here instead of in the params builder because this can be specified
-            // positionally or in the params class.
-            checkRequired("id", params.id())
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.DELETE)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("v1", "mcp", "servers", params._pathParam(0))
-                    .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response.use { deleteHandler.handle(it) }
             }
         }
     }
