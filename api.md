@@ -105,16 +105,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Mcp Servers`](#mcp-servers)
     - [List all MCP servers](#list-all-mcp-servers)
     - [Create an MCP server](#create-an-mcp-server)
-    - [Get an MCP server](#get-an-mcp-server)
-    - [Update an MCP server](#update-an-mcp-server)
-    - [Delete an MCP server](#delete-an-mcp-server)
-    - [`Mcp Servers Installations`](#mcp-servers-installations)
-      - [List installations](#list-installations)
-      - [Get an installation](#get-an-installation)
-      - [Update an installation](#update-an-installation)
-      - [Delete an installation](#delete-an-installation)
-      - [Add an access group](#add-an-access-group)
-      - [Remove an access group](#remove-an-access-group)
 
 ## Setup
 
@@ -2172,12 +2162,12 @@ MCP
 
 #### List all MCP servers
 
-List every MCP server on the team.
+List every MCP server on the team, each with its environments and the version tag a request that names no version gets there.
 
 | Direction | Type |
 | --- | --- |
 | Request | [`ServerListParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerListParams.kt) |
-| Response | [`List<McpServer>`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpServer.kt) |
+| Response | [`List<ServerListResponse>`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerListResponse.kt) |
 
 ```kotlin
 import com.scalar.api.client.ScalarClient
@@ -2194,7 +2184,7 @@ println(server)
 
 #### Create an MCP server
 
-Create an MCP server over one or more API document versions. The response carries the server and its first installation.
+Create an MCP server linking the API documents of the named versions and the named docs projects. The server builds from each linked document’s versions, not only the version named.
 
 | Direction | Type |
 | --- | --- |
@@ -2213,221 +2203,4 @@ val params = ServerCreateParams.builder().name("Acme MCP").build()
 val server = client.mcp().servers().create(params)
 
 println(server)
-```
-
-#### Get an MCP server
-
-Get a single MCP server by its id.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`ServerRetrieveParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerRetrieveParams.kt) |
-| Response | [`McpServer`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpServer.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.ServerRetrieveParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params = ServerRetrieveParams.builder().id("42").build()
-val server = client.mcp().servers().retrieve(params)
-
-println(server)
-```
-
-#### Update an MCP server
-
-Update MCP server metadata and which tools it exposes.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`ServerUpdateParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerUpdateParams.kt) |
-| Response | [`McpServer`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpServer.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.ServerUpdateParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params = ServerUpdateParams.builder().id("42").build()
-val server = client.mcp().servers().update(params)
-
-println(server)
-```
-
-#### Delete an MCP server
-
-Delete an MCP server and every installation it serves.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`ServerDeleteParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/ServerDeleteParams.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.ServerDeleteParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params = ServerDeleteParams.builder().id("42").build()
-val server = client.mcp().servers().delete(params)
-
-println(server)
-```
-
-#### `Mcp Servers Installations`
-
-MCP
-
-##### List installations
-
-List the installations of an MCP server. An installation is what an MCP client connects to.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`InstallationListParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationListParams.kt) |
-| Response | [`List<McpInstallationListItem>`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/McpInstallationListItem.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.installations.InstallationListParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params = InstallationListParams.builder().id("42").build()
-val installation = client.mcp().servers().installations().list(params)
-
-println(installation)
-```
-
-##### Get an installation
-
-Get a single installation of an MCP server. Deprecated: address the environment by slug with the `/environments/:environment` form.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`InstallationRetrieveParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationRetrieveParams.kt) |
-| Response | [`McpInstallation`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpInstallation.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.installations.InstallationRetrieveParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params = InstallationRetrieveParams.builder().id("42").installationId("84").build()
-val installation = client.mcp().servers().installations().retrieve(params)
-
-println(installation)
-```
-
-##### Update an installation
-
-Update an installation. Deprecated: address the environment by slug with the `/environments/:environment` form.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`InstallationUpdateParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationUpdateParams.kt) |
-| Response | [`McpInstallation`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/McpInstallation.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.installations.InstallationUpdateParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params = InstallationUpdateParams.builder().id("42").installationId("84").build()
-val installation = client.mcp().servers().installations().update(params)
-
-println(installation)
-```
-
-##### Delete an installation
-
-Delete an installation of an MCP server. Deprecated: address the environment by slug with the `/environments/:environment` form.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`InstallationDeleteParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationDeleteParams.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.installations.InstallationDeleteParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params = InstallationDeleteParams.builder().id("42").installationId("84").build()
-val installation = client.mcp().servers().installations().delete(params)
-
-println(installation)
-```
-
-##### Add an access group
-
-Let an access group reach a private installation. Requires a team admin. Deprecated: address the environment by slug with the `/environments/:environment` form.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`InstallationCreateAccessGroupParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationCreateAccessGroupParams.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.installations.InstallationCreateAccessGroupParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params =
-    InstallationCreateAccessGroupParams.builder()
-        .id("42")
-        .installationId("84")
-        .accessGroupUid("UakgbKJ5m9gl0JDMbcJqL")
-        .build()
-val installation = client.mcp().servers().installations().createAccessGroup(params)
-
-println(installation)
-```
-
-##### Remove an access group
-
-Stop an access group reaching a private installation. Requires a team admin. Deprecated: address the environment by slug with the `/environments/:environment` form.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`InstallationDeleteAccessGroupParams`](./scalar-kotlin-core/src/main/kotlin/com/scalar/api/models/mcp/servers/installations/InstallationDeleteAccessGroupParams.kt) |
-
-```kotlin
-import com.scalar.api.client.ScalarClient
-import com.scalar.api.client.okhttp.ScalarOkHttpClient
-import com.scalar.api.models.mcp.servers.installations.InstallationDeleteAccessGroupParams
-
-val client: ScalarClient =
-    ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
-
-val params =
-    InstallationDeleteAccessGroupParams.builder()
-        .id("42")
-        .installationId("84")
-        .accessGroupUid("UakgbKJ5m9gl0JDMbcJqL")
-        .build()
-val installation = client.mcp().servers().installations().deleteAccessGroup(params)
-
-println(installation)
 ```

@@ -6,14 +6,10 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.api.core.ClientOptions
 import com.scalar.api.core.RequestOptions
 import com.scalar.api.core.http.HttpResponseFor
-import com.scalar.api.models.mcp.servers.McpServer
 import com.scalar.api.models.mcp.servers.ServerCreateParams
 import com.scalar.api.models.mcp.servers.ServerCreateResponse
-import com.scalar.api.models.mcp.servers.ServerDeleteParams
 import com.scalar.api.models.mcp.servers.ServerListParams
-import com.scalar.api.models.mcp.servers.ServerRetrieveParams
-import com.scalar.api.models.mcp.servers.ServerUpdateParams
-import com.scalar.api.services.blocking.mcp.servers.InstallationService
+import com.scalar.api.models.mcp.servers.ServerListResponse
 
 /** MCP */
 interface ServerService {
@@ -30,78 +26,27 @@ interface ServerService {
      */
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ServerService
 
-    /** MCP */
-    fun installations(): InstallationService
-
     /**
-     * Create an MCP server over one or more API document versions. The response carries the server
-     * and its first installation.
+     * Create an MCP server linking the API documents of the named versions and the named docs
+     * projects. The server builds from each linked document’s versions, not only the version named.
      */
     fun create(
         params: ServerCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ServerCreateResponse
 
-    /** Get a single MCP server by its id. */
-    fun retrieve(
-        id: String,
-        params: ServerRetrieveParams = ServerRetrieveParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): McpServer = retrieve(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see retrieve */
-    fun retrieve(
-        params: ServerRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): McpServer
-
-    /** @see retrieve */
-    fun retrieve(id: String, requestOptions: RequestOptions): McpServer =
-        retrieve(id, ServerRetrieveParams.none(), requestOptions)
-
-    /** Update MCP server metadata and which tools it exposes. */
-    fun update(
-        id: String,
-        params: ServerUpdateParams = ServerUpdateParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): McpServer = update(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see update */
-    fun update(
-        params: ServerUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): McpServer
-
-    /** @see update */
-    fun update(id: String, requestOptions: RequestOptions): McpServer =
-        update(id, ServerUpdateParams.none(), requestOptions)
-
-    /** List every MCP server on the team. */
+    /**
+     * List every MCP server on the team, each with its environments and the version tag a request
+     * that names no version gets there.
+     */
     fun list(
         params: ServerListParams = ServerListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<McpServer>
+    ): List<ServerListResponse>
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): List<McpServer> =
+    fun list(requestOptions: RequestOptions): List<ServerListResponse> =
         list(ServerListParams.none(), requestOptions)
-
-    /** Delete an MCP server and every installation it serves. */
-    fun delete(
-        id: String,
-        params: ServerDeleteParams = ServerDeleteParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): Any? = delete(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see delete */
-    fun delete(
-        params: ServerDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): Any?
-
-    /** @see delete */
-    fun delete(id: String, requestOptions: RequestOptions): Any? =
-        delete(id, ServerDeleteParams.none(), requestOptions)
 
     /** A view of [ServerService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -112,9 +57,6 @@ interface ServerService {
          * The original service is not modified.
          */
         fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ServerService.WithRawResponse
-
-        /** MCP */
-        fun installations(): InstallationService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v1/mcp/servers`, but is otherwise the same as
@@ -127,52 +69,6 @@ interface ServerService {
         ): HttpResponseFor<ServerCreateResponse>
 
         /**
-         * Returns a raw HTTP response for `get /v1/mcp/servers/{id}`, but is otherwise the same as
-         * [ServerService.retrieve].
-         */
-        @MustBeClosed
-        fun retrieve(
-            id: String,
-            params: ServerRetrieveParams = ServerRetrieveParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpServer> = retrieve(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see retrieve */
-        @MustBeClosed
-        fun retrieve(
-            params: ServerRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpServer>
-
-        /** @see retrieve */
-        @MustBeClosed
-        fun retrieve(id: String, requestOptions: RequestOptions): HttpResponseFor<McpServer> =
-            retrieve(id, ServerRetrieveParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `patch /v1/mcp/servers/{id}`, but is otherwise the same
-         * as [ServerService.update].
-         */
-        @MustBeClosed
-        fun update(
-            id: String,
-            params: ServerUpdateParams = ServerUpdateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpServer> = update(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see update */
-        @MustBeClosed
-        fun update(
-            params: ServerUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpServer>
-
-        /** @see update */
-        @MustBeClosed
-        fun update(id: String, requestOptions: RequestOptions): HttpResponseFor<McpServer> =
-            update(id, ServerUpdateParams.none(), requestOptions)
-
-        /**
          * Returns a raw HTTP response for `get /v1/mcp/servers`, but is otherwise the same as
          * [ServerService.list].
          */
@@ -180,34 +76,11 @@ interface ServerService {
         fun list(
             params: ServerListParams = ServerListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<McpServer>>
+        ): HttpResponseFor<List<ServerListResponse>>
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<List<McpServer>> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<List<ServerListResponse>> =
             list(ServerListParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `delete /v1/mcp/servers/{id}`, but is otherwise the same
-         * as [ServerService.delete].
-         */
-        @MustBeClosed
-        fun delete(
-            id: String,
-            params: ServerDeleteParams = ServerDeleteParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?> = delete(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see delete */
-        @MustBeClosed
-        fun delete(
-            params: ServerDeleteParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
-
-        /** @see delete */
-        @MustBeClosed
-        fun delete(id: String, requestOptions: RequestOptions): HttpResponseFor<Any?> =
-            delete(id, ServerDeleteParams.none(), requestOptions)
     }
 }

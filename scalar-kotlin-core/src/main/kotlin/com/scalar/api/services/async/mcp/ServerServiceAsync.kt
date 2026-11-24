@@ -6,14 +6,10 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.scalar.api.core.ClientOptions
 import com.scalar.api.core.RequestOptions
 import com.scalar.api.core.http.HttpResponseFor
-import com.scalar.api.models.mcp.servers.McpServer
 import com.scalar.api.models.mcp.servers.ServerCreateParams
 import com.scalar.api.models.mcp.servers.ServerCreateResponse
-import com.scalar.api.models.mcp.servers.ServerDeleteParams
 import com.scalar.api.models.mcp.servers.ServerListParams
-import com.scalar.api.models.mcp.servers.ServerRetrieveParams
-import com.scalar.api.models.mcp.servers.ServerUpdateParams
-import com.scalar.api.services.async.mcp.servers.InstallationServiceAsync
+import com.scalar.api.models.mcp.servers.ServerListResponse
 
 /** MCP */
 interface ServerServiceAsync {
@@ -30,78 +26,27 @@ interface ServerServiceAsync {
      */
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): ServerServiceAsync
 
-    /** MCP */
-    fun installations(): InstallationServiceAsync
-
     /**
-     * Create an MCP server over one or more API document versions. The response carries the server
-     * and its first installation.
+     * Create an MCP server linking the API documents of the named versions and the named docs
+     * projects. The server builds from each linked document’s versions, not only the version named.
      */
     suspend fun create(
         params: ServerCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ServerCreateResponse
 
-    /** Get a single MCP server by its id. */
-    suspend fun retrieve(
-        id: String,
-        params: ServerRetrieveParams = ServerRetrieveParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): McpServer = retrieve(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see retrieve */
-    suspend fun retrieve(
-        params: ServerRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): McpServer
-
-    /** @see retrieve */
-    suspend fun retrieve(id: String, requestOptions: RequestOptions): McpServer =
-        retrieve(id, ServerRetrieveParams.none(), requestOptions)
-
-    /** Update MCP server metadata and which tools it exposes. */
-    suspend fun update(
-        id: String,
-        params: ServerUpdateParams = ServerUpdateParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): McpServer = update(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see update */
-    suspend fun update(
-        params: ServerUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): McpServer
-
-    /** @see update */
-    suspend fun update(id: String, requestOptions: RequestOptions): McpServer =
-        update(id, ServerUpdateParams.none(), requestOptions)
-
-    /** List every MCP server on the team. */
+    /**
+     * List every MCP server on the team, each with its environments and the version tag a request
+     * that names no version gets there.
+     */
     suspend fun list(
         params: ServerListParams = ServerListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<McpServer>
+    ): List<ServerListResponse>
 
     /** @see list */
-    suspend fun list(requestOptions: RequestOptions): List<McpServer> =
+    suspend fun list(requestOptions: RequestOptions): List<ServerListResponse> =
         list(ServerListParams.none(), requestOptions)
-
-    /** Delete an MCP server and every installation it serves. */
-    suspend fun delete(
-        id: String,
-        params: ServerDeleteParams = ServerDeleteParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): Any? = delete(params.toBuilder().id(id).build(), requestOptions)
-
-    /** @see delete */
-    suspend fun delete(
-        params: ServerDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): Any?
-
-    /** @see delete */
-    suspend fun delete(id: String, requestOptions: RequestOptions): Any? =
-        delete(id, ServerDeleteParams.none(), requestOptions)
 
     /**
      * A view of [ServerServiceAsync] that provides access to raw HTTP responses for each method.
@@ -117,9 +62,6 @@ interface ServerServiceAsync {
             modifier: (ClientOptions.Builder) -> Unit,
         ): ServerServiceAsync.WithRawResponse
 
-        /** MCP */
-        fun installations(): InstallationServiceAsync.WithRawResponse
-
         /**
          * Returns a raw HTTP response for `post /v1/mcp/servers`, but is otherwise the same as
          * [ServerServiceAsync.create].
@@ -131,54 +73,6 @@ interface ServerServiceAsync {
         ): HttpResponseFor<ServerCreateResponse>
 
         /**
-         * Returns a raw HTTP response for `get /v1/mcp/servers/{id}`, but is otherwise the same as
-         * [ServerServiceAsync.retrieve].
-         */
-        @MustBeClosed
-        suspend fun retrieve(
-            id: String,
-            params: ServerRetrieveParams = ServerRetrieveParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpServer> = retrieve(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see retrieve */
-        @MustBeClosed
-        suspend fun retrieve(
-            params: ServerRetrieveParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpServer>
-
-        /** @see retrieve */
-        @MustBeClosed
-        suspend fun retrieve(
-            id: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<McpServer> = retrieve(id, ServerRetrieveParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `patch /v1/mcp/servers/{id}`, but is otherwise the same
-         * as [ServerServiceAsync.update].
-         */
-        @MustBeClosed
-        suspend fun update(
-            id: String,
-            params: ServerUpdateParams = ServerUpdateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpServer> = update(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see update */
-        @MustBeClosed
-        suspend fun update(
-            params: ServerUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<McpServer>
-
-        /** @see update */
-        @MustBeClosed
-        suspend fun update(id: String, requestOptions: RequestOptions): HttpResponseFor<McpServer> =
-            update(id, ServerUpdateParams.none(), requestOptions)
-
-        /**
          * Returns a raw HTTP response for `get /v1/mcp/servers`, but is otherwise the same as
          * [ServerServiceAsync.list].
          */
@@ -186,34 +80,12 @@ interface ServerServiceAsync {
         suspend fun list(
             params: ServerListParams = ServerListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<McpServer>>
+        ): HttpResponseFor<List<ServerListResponse>>
 
         /** @see list */
         @MustBeClosed
-        suspend fun list(requestOptions: RequestOptions): HttpResponseFor<List<McpServer>> =
-            list(ServerListParams.none(), requestOptions)
-
-        /**
-         * Returns a raw HTTP response for `delete /v1/mcp/servers/{id}`, but is otherwise the same
-         * as [ServerServiceAsync.delete].
-         */
-        @MustBeClosed
-        suspend fun delete(
-            id: String,
-            params: ServerDeleteParams = ServerDeleteParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?> = delete(params.toBuilder().id(id).build(), requestOptions)
-
-        /** @see delete */
-        @MustBeClosed
-        suspend fun delete(
-            params: ServerDeleteParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<Any?>
-
-        /** @see delete */
-        @MustBeClosed
-        suspend fun delete(id: String, requestOptions: RequestOptions): HttpResponseFor<Any?> =
-            delete(id, ServerDeleteParams.none(), requestOptions)
+        suspend fun list(
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<List<ServerListResponse>> = list(ServerListParams.none(), requestOptions)
     }
 }
