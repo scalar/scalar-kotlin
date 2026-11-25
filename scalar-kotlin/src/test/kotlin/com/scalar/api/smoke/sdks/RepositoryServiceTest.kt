@@ -26,7 +26,7 @@ internal class RepositoryServiceTest {
             val params =
                 RepositoryLinkParams.builder()
                     .uid("UakgbKJ5m9gl0JDMbcJqL")
-                    .language(RepositoryLinkParams.Language.of("typescript"))
+                    .language(RepositoryLinkParams.Language.TYPESCRIPT)
                     .repositoryId(123456789L)
                     .baseBranch("main")
                     .build()
@@ -45,9 +45,10 @@ internal class RepositoryServiceTest {
             val params =
                 RepositoryLinkParams.builder()
                     .uid("UakgbKJ5m9gl0JDMbcJqL")
-                    .language(RepositoryLinkParams.Language.of("typescript"))
+                    .language(RepositoryLinkParams.Language.TYPESCRIPT)
                     .repositoryId(123456789L)
                     .baseBranch("main")
+                    .promotion(RepositoryLinkParams.Promotion.AUTOMATIC)
                     .prereleaseType("beta")
                     .build()
             val repository = client.sdks().repositories().link(params)
@@ -65,7 +66,7 @@ internal class RepositoryServiceTest {
             val params =
                 RepositoryUnlinkParams.builder()
                     .uid("UakgbKJ5m9gl0JDMbcJqL")
-                    .language(RepositoryUnlinkParams.Language.of("typescript"))
+                    .language(RepositoryUnlinkParams.Language.TYPESCRIPT)
                     .build()
             val repository = client.sdks().repositories().unlink(params)
         }
@@ -82,7 +83,7 @@ internal class RepositoryServiceTest {
             val params =
                 RepositoryUpdatePublishingParams.builder()
                     .uid("UakgbKJ5m9gl0JDMbcJqL")
-                    .language(RepositoryUpdatePublishingParams.Language.of("typescript"))
+                    .language(RepositoryUpdatePublishingParams.Language.TYPESCRIPT)
                     .publishOnMerge(true)
                     .build()
             val repository = client.sdks().repositories().updatePublishing(params)
@@ -100,10 +101,10 @@ internal class RepositoryServiceTest {
             val params =
                 RepositoryUpdatePublishingParams.builder()
                     .uid("UakgbKJ5m9gl0JDMbcJqL")
-                    .language(RepositoryUpdatePublishingParams.Language.of("typescript"))
+                    .language(RepositoryUpdatePublishingParams.Language.TYPESCRIPT)
                     .publishOnMerge(true)
-                    .authMethod(RepositoryUpdatePublishingParams.AuthMethod.of("oidc"))
-                    .access(RepositoryUpdatePublishingParams.Access.of("public"))
+                    .authMethod(RepositoryUpdatePublishingParams.AuthMethod.OIDC)
+                    .access(RepositoryUpdatePublishingParams.Access.PUBLIC)
                     .tag("latest")
                     .artifactId("scalar-galaxy")
                     .tapRepo("scalar/homebrew-tap")

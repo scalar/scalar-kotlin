@@ -241,6 +241,7 @@ Non-success responses throw generated API errors. Error objects expose status, h
 
 ```kotlin
 import com.scalar.api.errors.ScalarServiceException
+import com.scalar.api.models.registry.RegistryListAllApiDocumentsParams
 
 try {
     val registry = client.registry().listAllApiDocuments(RegistryListAllApiDocumentsParams.none())
@@ -265,6 +266,7 @@ import java.time.Duration
 
 val client: ScalarClient =
     ScalarOkHttpClient.builder()
+        .bearerAuth(System.getenv("BEARER_AUTH"))
         .baseUrl("https://access.scalar.com")
         .timeout(Duration.ofSeconds(60))
         .maxRetries(2)
@@ -321,6 +323,7 @@ Generated clients support request timeouts and retry temporary failures such as 
 ## Requirements
 
 - Java 8 or later
+- Kotlin 1.8 or later, when calling the SDK from Kotlin
 
 <br />
 
