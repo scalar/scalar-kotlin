@@ -13,8 +13,6 @@ java {
 
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-
-    withSourcesJar()
 }
 
 tasks.named<JavaCompile>("compileJava") {
@@ -34,7 +32,7 @@ tasks.named<Jar>("jar") {
             mapOf(
                 "Implementation-Title" to project.name,
                 "Implementation-Version" to project.version,
-            )
+            ),
         )
     }
 }
