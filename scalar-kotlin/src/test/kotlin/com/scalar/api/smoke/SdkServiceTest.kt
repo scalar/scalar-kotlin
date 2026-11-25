@@ -51,11 +51,7 @@ internal class SdkServiceTest {
             "create",
             "/v1/sdks",
         ) { client ->
-            val params =
-                SdkCreateParams.builder()
-                    .apiUid("UakgbKJ5m9gl0JDMbcJqL")
-                    .languages(listOf(SdkCreateParams.Language.of("typescript")))
-                    .build()
+            val params = SdkCreateParams.builder().apiUid("UakgbKJ5m9gl0JDMbcJqL").build()
             val sdk = client.sdks().create(params)
         }
     }
@@ -71,7 +67,7 @@ internal class SdkServiceTest {
             val params =
                 SdkCreateParams.builder()
                     .apiUid("UakgbKJ5m9gl0JDMbcJqL")
-                    .languages(listOf(SdkCreateParams.Language.of("typescript")))
+                    .languages(listOf(SdkCreateParams.Language.TYPESCRIPT))
                     .title("Acme SDK")
                     .slug("acme-api")
                     .className("Acme")
@@ -168,7 +164,7 @@ internal class SdkServiceTest {
                     .uid("UakgbKJ5m9gl0JDMbcJqL")
                     .version("1.2.0")
                     .customCodeRef("scalar-next")
-                    .languages(listOf(SdkBuildParams.Language.of("typescript")))
+                    .languages(listOf(SdkBuildParams.Language.TYPESCRIPT))
                     .build()
             val sdk = client.sdks().build(params)
         }

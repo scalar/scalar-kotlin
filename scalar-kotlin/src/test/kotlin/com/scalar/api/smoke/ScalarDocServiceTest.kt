@@ -124,7 +124,7 @@ internal class ScalarDocServiceTest {
             val params =
                 ScalarDocCreateProjectParams.builder()
                     .name("Acme Documentation")
-                    .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
+                    .provider(ScalarDocCreateProjectParams.Provider.FORGEJO)
                     .build()
             val scalarDoc = client.scalarDocs().createProject(params)
         }
@@ -144,7 +144,7 @@ internal class ScalarDocServiceTest {
                     .slug("acme-api")
                     .isPrivate(false)
                     .blank(true)
-                    .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
+                    .provider(ScalarDocCreateProjectParams.Provider.FORGEJO)
                     .githubRepository(
                         ScalarDocCreateProjectParams.GithubRepository.builder()
                             .installationId(84L)

@@ -1606,7 +1606,7 @@ val client: ScalarClient =
 val params =
     ScalarDocCreateProjectParams.builder()
         .name("Acme Documentation")
-        .provider(ScalarDocCreateProjectParams.Provider.of("forgejo"))
+        .provider(ScalarDocCreateProjectParams.Provider.FORGEJO)
         .build()
 val scalarDoc = client.scalarDocs().createProject(params)
 
@@ -1905,7 +1905,7 @@ println(sdk)
 
 ### Create an SDK
 
-Create an SDK from an API document, targeting one or more languages.
+Create an SDK from an existing API document on the team. Its current version must have content. Send languages or a config declaring targets; omit languages to derive them from config. SDK and target counts must fit the team plan. Config is a JSON string.
 
 | Direction | Type |
 | --- | --- |
@@ -1920,11 +1920,7 @@ import com.scalar.api.models.sdks.SdkCreateParams
 val client: ScalarClient =
     ScalarOkHttpClient.builder().bearerAuth(System.getenv("BEARER_AUTH")).build()
 
-val params =
-    SdkCreateParams.builder()
-        .apiUid("UakgbKJ5m9gl0JDMbcJqL")
-        .languages(listOf(SdkCreateParams.Language.of("typescript")))
-        .build()
+val params = SdkCreateParams.builder().apiUid("UakgbKJ5m9gl0JDMbcJqL").build()
 val sdk = client.sdks().create(params)
 
 println(sdk)
@@ -1955,7 +1951,7 @@ println(sdk)
 
 ### Update an SDK
 
-Update SDK metadata, its linked API, or its config.
+Update SDK metadata, its linked API, or its JSON-string config. Targets using native GitHub delivery need separate repositories; delivery writes each package at the repository root. Sharing a repository across language targets in this SDK and using reserved promote branches are rejected before config saves.
 
 | Direction | Type |
 | --- | --- |
@@ -2074,7 +2070,7 @@ SDKs
 
 #### Link a repository
 
-Link one language target to a GitHub repository, so builds sync there.
+Link an existing language target to a GitHub repository accessible through the Scalar GitHub App. Requires team edit permission and a paid SDK automation plan. Native delivery writes at the repository root; use a separate repository for each target. Directory fields are unsupported. Linking can immediately sync the current build under automatic promotion; pass promotion: manual to hold it back. If GitHub access is missing, connect GitHub and grant the App access in Scalar Dashboard before retrying.
 
 | Direction | Type |
 | --- | --- |
@@ -2092,7 +2088,7 @@ val client: ScalarClient =
 val params =
     RepositoryLinkParams.builder()
         .uid("UakgbKJ5m9gl0JDMbcJqL")
-        .language(RepositoryLinkParams.Language.of("typescript"))
+        .language(RepositoryLinkParams.Language.TYPESCRIPT)
         .repositoryId(123456789L)
         .baseBranch("main")
         .build()
@@ -2120,7 +2116,7 @@ val client: ScalarClient =
 val params =
     RepositoryUnlinkParams.builder()
         .uid("UakgbKJ5m9gl0JDMbcJqL")
-        .language(RepositoryUnlinkParams.Language.of("typescript"))
+        .language(RepositoryUnlinkParams.Language.TYPESCRIPT)
         .build()
 val repository = client.sdks().repositories().unlink(params)
 
@@ -2146,7 +2142,7 @@ val client: ScalarClient =
 val params =
     RepositoryUpdatePublishingParams.builder()
         .uid("UakgbKJ5m9gl0JDMbcJqL")
-        .language(RepositoryUpdatePublishingParams.Language.of("typescript"))
+        .language(RepositoryUpdatePublishingParams.Language.TYPESCRIPT)
         .publishOnMerge(true)
         .build()
 val repository = client.sdks().repositories().updatePublishing(params)
