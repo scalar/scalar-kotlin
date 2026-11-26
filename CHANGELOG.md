@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/scalar/scalar-kotlin/compare/v0.2.0...v0.3.0) (2026-11-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** request-shape post /v1/docs/{}/publish body.commitSha — union in after only (review: direction-dependent; read the hunk)
+
+### Features
+
+* **api:** update SDK surface (3 changes) ([d291d56](https://github.com/scalar/scalar-kotlin/commit/d291d569f663fb4644b78ccc30aa37b6c2f80b55))
+
 ## [0.2.0](https://github.com/scalar/scalar-kotlin/compare/v0.1.0...v0.2.0) (2026-11-25)
 
 
